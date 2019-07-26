@@ -5,7 +5,7 @@ Route::get('/', function () { return redirect('/admin/home'); });
 Route::get('login', 'Auth\LoginController@showLoginForm')->name('login');
 Route::post('login', 'Auth\LoginController@login')->name('auth.login');
 Route::post('logout', 'Auth\LoginController@logout')->name('auth.logout');
-Route::get('uft-chart/{type}','ChartController@makeChart');
+Route::get('chart/{uft}','ChartController@makeChart');
 
 // Change Password Routes...
 Route::get('change_password', 'Auth\ChangePasswordController@showChangePasswordForm')->name('auth.change_password');

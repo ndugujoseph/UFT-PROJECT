@@ -14,27 +14,27 @@
                     <table class="table table-bordered table-striped">
                         <tr>
                             <th>@lang('quickadmin.agents.fields.full-name')</th>
-                            <td field-key='full_name'>{{ agents->full_name }}</td>
+                            <td field-key='full_name'>{{ $agents->full_name }}</td>
                         </tr>
                         <tr>
                             <th>@lang('quickadmin.agents.fields.username')</th>
-                            <td field-key='username'>{{ agents->username }}</td>
+                            <td field-key='username'>{{ $agents->username }}</td>
                         </tr>
                         <tr>
                             <th>@lang('quickadmin.agents.fields.date-of-birth')</th>
-                            <td field-key='date_of_birth'>{{ agents->date_of_birth }}</td>
+                            <td field-key='date_of_birth'>{{ $agents->date_of_birth }}</td>
                         </tr>
                         <tr>
                             <th>@lang('quickadmin.agents.fields.email')</th>
-                            <td field-key='email'>{{ agents->email }}</td>
+                            <td field-key='email'>{{ $agents->email }}</td>
                         </tr>
                         <tr>
                             <th>@lang('quickadmin.agents.fields.gender')</th>
-                            <td field-key='gender'>{{ agents->gender }}</td>
+                            <td field-key='gender'>{{ $agents->gender }}</td>
                         </tr>
                         <tr>
                             <th>@lang('quickadmin.agents.fields.signature')</th>
-                            <td field-key='signature'>{{ agents->signature }}</td>
+                            <td field-key='signature'>{{ $agents->signature }}</td>
                         </tr>
                         <tr>
                             <th>@lang('quickadmin.agents.fields.password')</th>
@@ -46,7 +46,7 @@
 
             <p>&nbsp;</p>
 
-            <a href="{{ route('admin.agentsses.index') }}" class="btn btn-default">@lang('quickadmin.qa_back_to_list')</a>
+            <a href="{{ route('admin.agents.index') }}" class="btn btn-default">@lang('quickadmin.qa_back_to_list')</a>
         </div>
     </div>
 @stop

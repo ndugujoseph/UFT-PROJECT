@@ -143,7 +143,7 @@
             
 
             <li class="{{ $request->segment(1) == 'chart' ? 'active' : '' }}">
-                <a href="{{ url('/uft-chart/bar') }}">
+                <a href="{{ url('/chart/bar') }}">
                     <i class="fa fa-area-chart"></i>
                     <span class="title">@lang('quickadmin.uft-charts.title')</span>
                 </a>

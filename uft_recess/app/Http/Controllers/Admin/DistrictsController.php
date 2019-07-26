@@ -9,6 +9,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\StoreDistrictsRequest;
 use App\Http\Requests\Admin\UpdateDistrictsRequest;
 
+
+
 class DistrictsController extends Controller
 {
     /**
@@ -61,12 +63,7 @@ class DistrictsController extends Controller
         }
         $districts = Districts::create($request->all());
 
-        foreach ($request->input('crm_customers', []) as $data) {
-            $districts->crm_customers()->create($data);
-        }
-        foreach ($request->input('crm_statuses', []) as $data) {
-            $districts->crm_statuses()->create($data);
-        }
+       
 
 
         return redirect()->route('admin.districts.index');
@@ -86,6 +83,8 @@ class DistrictsController extends Controller
         }
         $districts = Districts::findOrFail($id);
 
+        
+
         return view('admin.districts.edit', compact('districts'));
     }
 
@@ -104,42 +103,7 @@ class DistrictsController extends Controller
         $districts = Districts::findOrFail($id);
         $districts->update($request->all());
 
-        $crmCustomers           = $districts->crm_customers;
-        $currentCrmCustomerData = [];
-        foreach ($request->input('crm_customers', []) as $index => $data) {
-            if (is_integer($index)) {
-                $districts->crm_customers()->create($data);
-            } else {
-                $id                          = explode('-', $index)[1];
-                $currentCrmCustomerData[$id] = $data;
-            }
-        }
-        foreach ($crmCustomers as $item) {
-            if (isset($currentCrmCustomerData[$item->id])) {
-                $item->update($currentCrmCustomerData[$item->id]);
-            } else {
-                $item->delete();
-            }
-        }
-        $crmStatuses           = $districts->crm_statuses;
-        $currentCrmStatusData = [];
-        foreach ($request->input('crm_statuses', []) as $index => $data) {
-            if (is_integer($index)) {
-                $districts->crm_statuses()->create($data);
-            } else {
-                $id                          = explode('-', $index)[1];
-                $currentCrmStatusData[$id] = $data;
-            }
-        }
-        foreach ($crmStatuses as $item) {
-            if (isset($currentCrmStatusData[$item->id])) {
-                $item->update($currentCrmStatusData[$item->id]);
-            } else {
-                $item->delete();
-            }
-        }
-
-
+    
         return redirect()->route('admin.districts.index');
     }
 
@@ -155,11 +119,9 @@ class DistrictsController extends Controller
         if (! Gate::allows('districts_view')) {
             return abort(401);
         }
-        $crm_customers = \App\CrmCustomer::where('district_id', $id)->get();$crm_statuses = \App\CrmStatus::where('district_id', $id)->get();
-
         $districts = Districts::findOrFail($id);
 
-        return view('admin.districts.show', compact('districts', 'crm_customers', 'crm_statuses'));
+        return view('admin.districts.show', compact('districts'));
     }
 
 

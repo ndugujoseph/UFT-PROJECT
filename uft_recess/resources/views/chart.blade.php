@@ -33,6 +33,9 @@
             <center>
 
                 {!! $chart->html() !!}
+                {!! $chart1->html() !!}
+                {!! $chart2->html() !!}
+                
 
             </center>
 
@@ -43,6 +46,8 @@
         {!! Charts::scripts() !!}
 
         {!! $chart->script() !!}
+        {!! $chart1->script() !!}
+        {!! $chart2->script() !!}
 
     </body>
 

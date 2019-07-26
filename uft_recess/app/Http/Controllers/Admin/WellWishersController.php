@@ -115,14 +115,10 @@ class WellWishersController extends Controller
             return abort(401);
         }
         
-        $districts = \App\Districts::get()->pluck('name', 'id')->prepend(trans('quickadmin.qa_please_select'), '');$tresuaries = \App\Tresuary::whereHas('amount',
-                    function ($query) use ($id) {
-                        $query->where('id', $id);
-                    })->get();
-
+        
         $well_wishers = WellWishers::findOrFail($id);
 
-        return view('admin.well_wishers.show', compact('well_wishers', 'tresuaries'));
+        return view('admin.well_wishers.show', compact('well_wishers'));
     }
 
 

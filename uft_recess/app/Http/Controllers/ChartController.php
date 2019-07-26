@@ -10,6 +10,10 @@ use Charts;
 
 use App\User;
 
+use App\WellWishers;
+
+use App\Tresuary;
+
 use DB;
 
 
@@ -27,23 +31,21 @@ class ChartController extends Controller
 
      */
 
-    public function makeChart($type)
+    public function makeChart($uft)
 
     {
 
-       // switch ($type) {
+        switch ($uft) {
 
-           // case 'bar':
-
-                $users = User::where(DB::raw("(DATE_FORMAT(created_at,'%Y'))"),date('Y')) 
-
-                        ->get();
-
+            case 'bar':
+                $WellWishers = WellWishers::where(DB::raw("(DATE_FORMAT(created_at,'%Y'))"),date('Y'))->get();
+                $users = User::where(DB::raw("(DATE_FORMAT(created_at,'%Y'))"),date('Y'))->get();
+                $Tresuary = Tresuary::where(DB::raw("(DATE_FORMAT(created_at,'%Y'))"),date('Y'))->get();
                 $chart = Charts::database($users, 'bar', 'highcharts') 
 
-                            ->title("Monthly new Register Users") 
+                            ->title("UFT Users") 
 
-                            ->elementLabel("Total Users") 
+                            ->elementLabel("No.Of Users") 
 
                             ->dimensions(1000, 500) 
 
@@ -51,114 +53,56 @@ class ChartController extends Controller
 
                             ->groupByMonth(date('Y'), true);
 
-              //  break;
+                $chart1 = Charts::database($WellWishers, 'bar', 'highcharts')
 
+                            ->title('WellWishers')
 
-          //  case 'pie':
+                            ->elementLabel('No. Of Well Wishers')
 
-                $chart = Charts::create('pie', 'highcharts')
+                            ->dimensions(1000, 500) 
 
-                            ->title('HDTuto.com Laravel Pie Chart')
+                            ->responsive(true) 
 
-                            ->labels(['Codeigniter', 'Laravel', 'PHP'])
+                            ->groupByMonth(date('Y'), true);
 
-                            ->values([5,10,20])
+             $chart2 = Charts::database($Tresuary, 'bar', 'highcharts') 
 
-                            ->dimensions(1000,500)
+                            ->title("UFT Monthly Enrollment") 
 
-                            ->responsive(true);
+                            ->elementLabel("Enrollments") 
 
-              //  break;
+                            ->dimensions(1000, 500) 
 
+                            ->responsive(true) 
 
-          //  case 'donut':
+                            ->groupByMonth(date('Y'), true);
 
-                $chart = Charts::create('donut', 'highcharts')
+                            
 
-                            ->title('HDTuto.com Laravel Donut Chart')
+                break;
 
-                            ->labels(['First', 'Second', 'Third'])
-
-                            ->values([5,10,20])
-
-                            ->dimensions(1000,500)
-
-                            ->responsive(true);
-
-             //   break;
-
-
-           // case 'line':
-
-                $chart = Charts::create('line', 'highcharts')
-
-                            ->title('HDTuto.com Laravel Line Chart')
-
-                            ->elementLabel('HDTuto.com Laravel Line Chart Lable')
-
-                            ->labels(['First', 'Second', 'Third'])
-
-                            ->values([5,10,20])
-
-                            ->dimensions(1000,500)
-
-                            ->responsive(true);
-
-             //   break;
-
-
-         //   case 'area':
-
-                $chart = Charts::create('area', 'highcharts')
-
-                            ->title('HDTuto.com Laravel Area Chart')
-
-                            ->elementLabel('HDTuto.com Laravel Line Chart label')
-
-                            ->labels(['First', 'Second', 'Third'])
-
-                            ->values([5,10,20])
-
-                            ->dimensions(1000,500)
-
-                            ->responsive(true);
-
-              //  break;
-
-
-           // case 'geo':
-
-                $chart = Charts::create('geo', 'highcharts')
-
-                            ->title('HDTuto.com Laravel GEO Chart')
-
-                            ->elementLabel('HDTuto.com Laravel GEO Chart label')
-
-                            ->labels(['ES', 'FR', 'RU'])
-
-                            ->colors(['#3D3D3D', '#985689'])
-
-                            ->values([5,10,20])
-
-                            ->dimensions(1000,500)
-
-                            ->responsive(true);
-
-              //  break;
-
-
-          //  default:
+            default:
 
                 # code...
 
-             //   break;
-             return view('chart', compact('chart'));
+                break;
 
-      //  }
+        }
 
-       
+        return view('chart', compact('chart','chart1','chart2'));
 
     }
 
 }
+/*
+public function index (){
 
+    $users=Tresuaries::where(DB::raw("(DATE_FORMAT(created_at,'%Y'))"),date('Y'))->get();
+            
+        $chart=charts::database($users,'bar','highcharts')
+            ->groupByMonth(date('Y'),true);
+    
+    
+            return view('charts',compact('chart'));
+    
+        }*/
