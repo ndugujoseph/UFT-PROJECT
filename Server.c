@@ -56,8 +56,8 @@ int splitter(char data[],char check[],char dis[]){
 		FILE *fptr;
 		char pitem[1024];
 		char location[1024];
-		//sprintf(location,"UFT/storage/app/recommender/%s.txt",dis);
-      sprintf(location,"recommender.txt");
+		sprintf(location,"uft_recess/storage/app/recommender/%s.txt",dis);
+      //sprintf(location,"recommender.txt");
 		fptr = fopen(location,"r");
 			if(fptr ==NULL){
 				printf("file not found \n");
@@ -90,12 +90,13 @@ int currdate(char timex[]){
 
 int addmember(char arr[],char dis[],char dater[]){
 	char location[1024];
-	//sprintf(location,"UFT/storage/app/enrollments/%s.txt",dis);
-  sprintf(location,"bugiri.txt");
+	sprintf(location,"uft_recess/storage/app/enrollments/%s.txt",dis);
+  //sprintf(location,"bugiri.txt");
 
 	FILE *fp;
 	   fp =fopen(location,"a");
-	   //sprintf(arr,"%s %s %s %s",arr[0],dater,arr[1],arr[2]);
+	   	int totalRead = strlen(arr);
+		arr[totalRead - 1] = arr[totalRead - 1] == '\n' ? '\0' : arr[totalRead - 1];
 	   sprintf(arr,"%s,%s",arr,dater);
 	   fputs(arr,fp);
 	   fputs("\n",fp);
@@ -177,7 +178,6 @@ int day, month, year;
 			while(1){
 				char buffer[1024];
 				char district[1024];
-				char password[10];
 				char user[1024];
 
 				char cdate[1024];
@@ -189,6 +189,7 @@ int day, month, year;
 					recv(newSocket,district,1024,0);
 					recv(newSocket,buffer,1024,0);
 
+					//variables to be used
 					char test[1024];
 					strcpy(test,buffer);
 					char check[100] = "fail";
@@ -199,20 +200,20 @@ int day, month, year;
 						int ch = 0;
 						int words;
 						char location[1024];
-					 //sprintf(location,"UFT/storage/app/enrollments/%s.txt",district);
-					 sprintf(location,"bugiri.txt");
+					sprintf(location,"uft_recess/storage/app/enrollments/%s.txt",district);
+					//sprintf(location,"bugiri.txt");
 						fp =fopen(location,"a");
 						recv(newSocket, &words, sizeof(int),0);				
-						printf("%d\n",words);
+						//printf("%d\n",words);
 						while(ch != words){
 							recv(newSocket,buffer,1024,0);
-							printf("%s",buffer);
+							//printf("%s",buffer);
 							splitter(test,check,district);
 
 							if(strcmp(check,"ok")==0){
 								//puts("file ok");
 								addmember(buffer,district,cdate);
-								sprintf(buffer,"command allowed");
+								sprintf(buffer,"\tcommand allowed");
 								send(newSocket,buffer,sizeof(buffer),0);							
 							}
 							else{
@@ -224,11 +225,10 @@ int day, month, year;
 							
 							ch++;
 							//printf("%d\n",ch);
-							printf("%d",ch);
 						}
 						fputs("\n",fp);
 						fclose(fp);
-						               
+						//creating a signature file                  
 					}
 					else{
 						//splitting and checking the recommender
@@ -237,7 +237,7 @@ int day, month, year;
                         if(strcmp(check,"ok")==0){
 							//puts("add ok");
 							addmember(buffer,district,cdate);
-							sprintf(buffer,"command allowed");
+							sprintf(buffer,"\t command allowed");
 							send(newSocket,buffer,sizeof(buffer),0);
 
 						}
@@ -258,8 +258,8 @@ int day, month, year;
 					puts(district);
 					puts(buffer);
 				
-					//sprintf(location,"UFT/storage/app/enrollments/%s.txt",district);
-                sprintf(location,"bugiri.txt");
+					sprintf(location,"uft_recess/storage/app/enrollments/%s.txt",district);
+               // sprintf(location,"bugiri.txt");
 
 					   //call the search module
 					checker(newSocket,location,buffer,district);
@@ -276,13 +276,14 @@ int day, month, year;
 					recv(newSocket, user, sizeof(user),0);
 
 					char location[1024];
-					//sprintf(location,"UFT/storage/app/payments/%s.txt",district);
-					sprintf(location,"bugiri.txt");
+					sprintf(location,"uft_recess/storage/app/payments/%s.txt",district);
+					//sprintf(location,"bugiri.txt");
 					//call the search module
 				    checker(newSocket,location,user,district);
 				}
 
-				else if(strcmp(buffer, "exit") == 0){
+				else if(strcmp(buffer, "Done") == 0){
+					
 					printf("Disconnected from %s:%d\n", inet_ntoa(newAddr.sin_addr), ntohs(newAddr.sin_port));
 				}
 			}
