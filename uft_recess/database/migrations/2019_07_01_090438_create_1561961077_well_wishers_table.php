@@ -15,10 +15,10 @@ class Create1561961077WellWishersTable extends Migration
         if(! Schema::hasTable('well_wishers')) {
             Schema::create('well_wishers', function (Blueprint $table) {
                 $table->increments('id');
-                $table->string('first_name')->nullable();
-                $table->string('amount')->nullable();
-                $table->string('date')->nullable();
-                
+                $table->string('name')->nullable();
+                $table->decimal('amount',10,0)->nullable();
+                $table->date('date')->nullable();
+                $table->integer('district_id')->nullable();
                 
                 $table->timestamps();
                 

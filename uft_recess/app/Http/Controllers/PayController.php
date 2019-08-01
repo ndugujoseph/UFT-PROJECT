@@ -1,46 +1,18 @@
 <?php
 
-namespace App\Console\Commands;
+namespace App\Http\Controllers;
 
-use Illuminate\Console\Command;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
 
-class PaymentUpdate extends Command
+class PayController extends Controller
 {
-    /**
-     * The name and signature of the console command.
-     *
-     * @var string
-     */
-    protected $signature = 'pay:update';
 
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
-    protected $description = 'Command description';
-
-    /**
-     * Create a new command instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        parent::__construct();
-    }
-
-    /**
-     * Execute the console command.
-     *
-     * @return mixed
-     */
-    public function handle()
-    {
-        $sumOfTreasury = DB::table('well_wishers')->sum('amount');
+public function pay(){
+    $sumOfTreasury = DB::table('well_wishers')->sum('amount');
         $sumPayable = $sumOfTreasury - 2000000;
+       
         if($sumPayable > 0){
             //total number of districts with  agents in the system
             $numDistrict = DB::table('agents')->distinct('district_id')->count('district_id');
@@ -50,7 +22,7 @@ class PaymentUpdate extends Command
             $maxEnrol = DB::table('districts')->max('members');
             $highDistrict = DB::table('districts')->where('members',$maxEnrol)
                                                   ->pluck('id');
-
+// dd( $highDistrict);
             $highnumDistrict = $highDistrict->count('id');
             $highnum = 0;
             foreach($highDistrict as $district){
@@ -71,46 +43,54 @@ class PaymentUpdate extends Command
             $stdAgentH = 7/4*$stdAgentSalary;
             $highAgentH = 2*$stdAgentH;
             $highAgent = 2*$stdAgentSalary;
-            $cdate=date('Y-m-d H:i:s');
             //inserts into the payment table... hell yeah
-        
-            DB::table('admin_payments')->updateOrInsert(['date'=>$cdate,'amount'=>$adminPay]);
-            DB::table('agent_head_payments')->updateOrInsert(['date'=>$cdate,'highest_erollment'=>$highAgentH,'lowest_erollment'=>$stdAgentH]);
-            DB::table('agent_payments')->updateOrInsert(['date'=>$cdate,'highest_erollment'=>$highAgent,'other_erollments'=>$stdAgentSalary]);
-           
+
+            DB::table('admin_payments')->updateOrInsert(['amount'=>$adminPay]);
+            DB::table('agent_head_payments')->updateOrInsert(['highest_erollment'=>$highAgentH]);
+            DB::table('agent_head_payments')->updateOrInsert(['lowest_erollment'=>$stdAgentH]);
+            DB::table('agent_payments')->updateOrInsert(['highest_erollment'=>$highAgent]);
+            DB::table('agent_payments')->updateOrInsert(['other_erollments'=>$stdAgentSalary]);
             //total payment
-            DB::table('total_payments')->updateOrInsert([
-            'date'=>$cdate,
-            'admin'=>$adminPay,
+            DB::table('total_payments')->updateOrInsert(['admin'=>$adminPay,
             'agent_low'=>$stdAgentSalary*($numAgent-$highnum),
             'agent_high'=>$highAgent*$highnum,
             'agent_head_low'=>($numDistrict-$highnumDistrict)*$stdAgentH,
             'agent_head_high'=>$highnumDistrict*$highAgentH]);
-            
+           
         }
 
             else{
                 $stdAgentSalary = $sumPayable/(1/2+(7/4*$numDistrict)+$numAgent);
                 $adminPay = 1/2*$stdAgentSalary;
                 $stdAgentH = 7/4*$stdAgentSalary;
-                $cdate=date('Y-m-d H:i:s');
-                
+
+                 //remove previous records
+                 DB::table('admin_payments')->truncate();
+                 DB::table('agent_head_payments')->truncate();
+                 DB::table('agent_payments')->truncate();
+                 DB::table('total_payments')->truncate();
+
                 //insert into payment tables
-                DB::table('admin_payments')->updateOrInsert(['date'=>$cdate,'amount'=>$adminPay]);
-                DB::table('agent_head_payments')->updateOrInsert(['date'=>$cdate,'lowest_erollment'=>$stdAgentH]);
-                DB::table('agent_payments')->updateOrInsert(['date'=>$cdate,'other_erollments'=>$stdAgentSalary]);
+                DB::table('admin_payments')->updateOrInsert(['amount'=>$adminPay]);
+                DB::table('agent_head_payments')->updateOrInsert(['lowest_erollment'=>$stdAgentH]);
+                DB::table('agent_payments')->updateOrInsert(['other_erollments'=>$stdAgentSalary]);
                 //total payment
-                DB::table('total_payments')->updateOrInsert([
-                'date'=>$cdate,
-                'admin'=>$adminPay,
-                'agent_low'=>$numDistrict*$stdAgentH,
-                'agent_high'=>$numDistrict*$stdAgentH,
-                'agent_head_low'=>$numDistrict*$stdAgentH,
-                'agent_head_high'=>$numDistrict*$stdAgentH]);
+            
+            DB::table('total_payments')->updateOrInsert(['admin'=>$adminPay,
+            'agent_low'=>$numDistrict*$stdAgentH,
+            'agent_high'=>$numDistrict*$stdAgentH,
+            'agent_head_low'=>$numDistrict*$stdAgentH,
+            'agent_head_high'=>$numDistrict*$stdAgentH]);
+            
 
             }
 
         }
-       
+        else{
+            DB::table('admin_payments')->truncate();
+            DB::table('agent_head_payments')->truncate();
+            DB::table('agent_payments')->truncate();
+            DB::table('total_payments')->truncate();
+        }
     }
 }

@@ -8,6 +8,9 @@ use Illuminate\Support\Facades\Gate;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\StoreMembersRequest;
 use App\Http\Requests\Admin\UpdateMembersRequest;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
+use Flash;
 
 class MembersController extends Controller
 {
@@ -174,7 +177,7 @@ class MembersController extends Controller
 
         return redirect()->route('admin.members.index');
     }
-
+    
     /**
      * Permanently delete Members from storage.
      *
@@ -189,6 +192,28 @@ class MembersController extends Controller
         $members = Members::onlyTrashed()->findOrFail($id);
         $members->forceDelete();
 
+        return redirect()->route('admin.members.index');
+    }
+    public  function recommend(){
+        
+        $txtmemberId = DB::table('members')->pluck('member_id');
+        $recommenders = DB::table('members')->distinct('recommender_member')->pluck('recommender_member');
+        $array = "";
+        $names = [];
+        $check = "fail";
+        foreach($recommenders as $recommender){
+            $count = DB::table('members')->where('recommender_member',$recommender)->count();
+            if($count >40){
+                $check = "ok";
+                $names = Arr::prepend($names,$recommender);
+                $array = $array." ".$recommender;
+
+            }
+
+        }
+        if(Str::is('ok',$check)){
+            Flash::success($array." have clocked 40 recommendations");
+        }
         return redirect()->route('admin.members.index');
     }
 }

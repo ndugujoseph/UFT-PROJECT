@@ -6,14 +6,14 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
 
-class AgentNum extends Command
+class MemberRec extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'agent:number';
+    protected $signature = 'rec:number';
 
     /**
      * The console command description.
@@ -39,14 +39,16 @@ class AgentNum extends Command
      */
     public function handle()
     {
-        $districts = DB::table('districts')->pluck('id');
-        foreach($districts as $district){
-                $count = DB::table('agents')
-                    ->where('district_id',$district)
+        $members = DB::table('members')->pluck('member_id');
+        foreach($members as $member){
+                $count = DB::table('members')
+                    ->where('recommender_member',$member)
                     ->count();
-                DB::table('districts')
-                    ->where('id',$district)
-                    ->update(['agents'=>$count]);
+                DB::table('members')
+                    ->where('member_id',$member)
+                    ->update(['recommendees'=>$count]);
+        
+    
 
         }
     }

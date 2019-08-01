@@ -73,13 +73,6 @@
                     </span>
                 </a>
                 <ul class="treeview-menu">
-                    @can('well_wishers_access')
-                    <li>
-                        <a href="{{ route('admin.well_wishers.index') }}">
-                            <i class="fa fa-user-plus"></i>
-                            <span>@lang('quickadmin.well-wishers.title')</span>
-                        </a>
-                    </li>@endcan
                     
                     @can('agent_head_payment_access')
                     <li>
@@ -102,6 +95,14 @@
                         <a href="{{ route('admin.admin_payments.index') }}">
                             <i class="fa fa-adn"></i>
                             <span>@lang('quickadmin.admin-payment.title')</span>
+                        </a>
+                    </li>@endcan
+
+                    @can('total_payment_access')
+                    <li>
+                        <a href="{{ route('admin.total_payment.index') }}">
+                            <i class="fa fa-adn"></i>
+                            <span>@lang('quickadmin.total-payment.title')</span>
                         </a>
                     </li>@endcan
                     
@@ -132,14 +133,15 @@
                 </a>
             </li>@endcan
             
-            @can('tresuary_access')
-            <li>
-                 <a href="{{ route('admin.tresuaries.index') }}">
-                    <i class="fa fa-rmb"></i>
-                    <span>@lang('quickadmin.tresuary.title')</span>
-                </a>
-            </li>@endcan
-        
+           
+            @can('well_wishers_access')
+                    <li>
+                        <a href="{{ route('admin.well_wishers.index') }}">
+                            <i class="fa fa-user-plus"></i>
+                            <span>@lang('quickadmin.tresuary.title')</span>
+                        </a>
+                    </li>
+            @endcan
             
 
             <li class="{{ $request->segment(1) == 'chart' ? 'active' : '' }}">

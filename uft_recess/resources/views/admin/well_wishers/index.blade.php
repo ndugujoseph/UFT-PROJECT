@@ -42,7 +42,7 @@
                                     <td></td>
                                 @endcan
 
-                                <td field-key='first_name'>{{ $well_wishers->first_name }}</td>
+                                <td field-key='name'>{{ $well_wishers->name }}</td>
                                 <td field-key='date'>{{ $well_wishers->date }}</td>
                                 <td field-key='amount'>{{ $well_wishers->amount }}</td>
                                 <td field-key='district'>{{ $well_wishers->district->name ?? '' }}</td>

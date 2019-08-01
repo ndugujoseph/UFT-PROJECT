@@ -11,7 +11,6 @@ use Hash;
  * @package App
  * @property string $full_name
  * @property string $username
- * @property string $date_of_birth
  * @property string $email
  * @property string $gender
  * @property string $role
@@ -21,40 +20,10 @@ use Hash;
 */
 class Agents extends Model
 {
-    protected $fillable = ['full_name', 'username', 'date_of_birth', 'email', 'gender', 'signature', 'password', 'role_id', 'district_id'];
+    protected $fillable = ['full_name', 'username', 'email', 'gender', 'signature', 'password', 'role_id', 'district_id'];
     protected $hidden = ['password'];
     
     
-
-    /**
-     * Set attribute to date format
-     * @param $input
-     */
-    public function setDateOfBirthAttribute($input)
-    {
-        if ($input != null && $input != '') {
-            $this->attributes['date_of_birth'] = Carbon::createFromFormat(config('app.date_format'), $input)->format('Y-m-d');
-        } else {
-            $this->attributes['date_of_birth'] = null;
-        }
-    }
-
-    /**
-     * Get attribute from date format
-     * @param $input
-     *
-     * @return string
-     */
-    public function getDateOfBirthAttribute($input)
-    {
-        $zeroDate = str_replace(['Y', 'm', 'd'], ['0000', '00', '00'], config('app.date_format'));
-
-        if ($input != $zeroDate && $input != null) {
-            return Carbon::createFromFormat('Y-m-d', $input)->format(config('app.date_format'));
-        } else {
-            return '';
-        }
-    }
 
     /**
      * Set to null if empty

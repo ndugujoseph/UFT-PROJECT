@@ -43,45 +43,54 @@ class MemberUpload extends Command
 
         $this->info('');
         */
-       $districts = DB::table('districts')->pluck('name');
+        $districts = DB::table('districts')->pluck('name');
 
-       foreach($districts as $district){
-            $rec = DB::table('members')->where('district',$district)->pluck('name');
-            Storage::delete('recommender/'.$district.'.txt');
-            foreach($rec as $recommender){
-                Storage::append('recommender/'.$district.'.txt',$recommender);
-            }
 
-       }
 
-                $files = Storage::files('/enrollments');
-                foreach($files as $district){
+        $files = Storage::files('/enrollments');
+        foreach($files as $district){
 
-                    $content = Storage::get($district);
+            $content = Storage::get($district);
 
-                    $contents = explode("\n",$content);
-                        foreach($contents as $arrays){
-                            $name = explode(" ",$arrays);
-                            if(!isset($name[1])){
-                                continue;
-                            }
-                            if(!isset($name[4])){
-                                DB::table('members')->updateOrInsert(
-                                    ['id'=>$name[0],'name'=>$name[1],'district'=>$name[2],'agent'=>$name[3]]
-                                );
+            $contents = explode("\n",$content);
+                foreach($contents as $arrays){
+                    $name = explode(",",$arrays);
+                    if(!isset($name[1])){
+                        continue;
+                    }
+                    $cdate=date('Y-m-d H:i:s');
+                    if(!isset($name[4])){
+                        continue;
+                    }
+                    
+                        DB::table('members')->updateOrInsert(
+                            ['name'=>$name[0],'gender'=>$name[1],'recommender_agent'=>$name[2],'date'=>$name[3],'district'=>$name[4],'created_at'=>$cdate]
+                        
+                        );
+                        Storage::delete('/enrollments');
+                        $dist = DB::table('districts')->pluck('name');
+                        foreach($dist as $distric){
 
-                            }
-                            else{
-                                DB::table('members')->updateOrInsert(
-                                    ['id'=>$name[0],'district'=>$name[2],'recommender'=>$name[4],'agent'=>$name[3],'name'=>$name[1]]
-                                );
+                        Storage::put('/enrollments/'.$distric.'.txt','');
                         }
 
-                        }
 
-            }
-
+            
+                }
 
     }
+
+    foreach($districts as $district){
+        $rec = DB::table('members')->where('district',$district)->pluck('name');
+        Storage::delete('recommender/'.$district.'.txt');
+        foreach($rec as $recommender){
+            Storage::append('recommender/'.$district.'.txt',$recommender);
+        }
+
+   }
+
+
+}
+
 
 }

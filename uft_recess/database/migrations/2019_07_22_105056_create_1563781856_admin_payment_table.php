@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class Create1562574633TresuariesTable extends Migration
+class Create1563781856AdminPaymentTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,12 +12,11 @@ class Create1562574633TresuariesTable extends Migration
      */
     public function up()
     {
-        if(! Schema::hasTable('tresuaries')) {
-            Schema::create('tresuaries', function (Blueprint $table) {
+        if(! Schema::hasTable('admin_payments')) {
+            Schema::create('admin_payments', function (Blueprint $table) {
                 $table->increments('id');
                 $table->date('date')->nullable();
-                $table->double('amount', 4, 2)->nullable();
-                $table->double('total', 4, 2)->nullable();
+                $table->decimal('amount', 10, 0)->nullable();
                 
                 $table->timestamps();
                 $table->softDeletes();
@@ -34,6 +33,6 @@ class Create1562574633TresuariesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tresuaries');
+        Schema::dropIfExists('admin_payments');
     }
 }

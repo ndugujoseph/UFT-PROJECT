@@ -47,18 +47,7 @@
                     @endif
                 </div>
             </div>
-            <div class="row">
-                <div class="col-xs-12 form-group">
-                    {!! Form::label('agent_head', trans('quickadmin.districts.fields.agent-head').'*', ['class' => 'control-label']) !!}
-                    {!! Form::text('agent_head', old('agent_head'), ['class' => 'form-control', 'placeholder' => '']) !!}
-                    <p class="help-block"></p>
-                    @if($errors->has('agent_head'))
-                        <p class="help-block">
-                            {{ $errors->first('agent_head') }}
-                        </p>
-                    @endif
-                </div>
-            </div>
+            
             
         </div>
     </div>

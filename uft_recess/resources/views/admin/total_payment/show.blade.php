@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <h3 class="page-title">@lang('quickadmin.tresuary.title')</h3>
+    <h3 class="page-title">@lang('quickadmin.total-payment.title')</h3>
 
     <div class="panel panel-default">
         <div class="panel-heading">
@@ -13,18 +13,24 @@
                 <div class="col-md-6">
                     <table class="table table-bordered table-striped">
                         <tr>
-                            <th>@lang('quickadmin.tresuary.fields.date')</th>
-                            <td field-key='date'>{{ $tresuary->date }}</td>
+                            <th>@lang('quickadmin.total-payment.fields.date')</th>
+                            <td field-key='date'>{{ $total_payment->date }}</td>
                         </tr>
                         <tr>
-                            <th>@lang('quickadmin.tresuary.fields.amount')</th>
-                            <td field-key='amount'>
-                            {{ $tresuary->amount }}
-                            </td>
+                            <th>@lang('quickadmin.total-payment.fields.agent-low')</th>
+                            <td field-key='highest_erollment'>{{ $total_payment->agent_low }}</td>
                         </tr>
                         <tr>
-                            <th>@lang('quickadmin.tresuary.fields.total')</th>
-                            <td field-key='total'>{{ $tresuary->total }}</td>
+                            <th>@lang('quickadmin.total-payment.fields.agent-high')</th>
+                            <td field-key='other_erollments'>{{ $total_payment->agent_low }}</td>
+                        </tr>
+                        <tr>
+                            <th>@lang('quickadmin.total-payment.fields.agent-head-low')</th>
+                            <td field-key='other_erollments'>{{ $total_payment->agent_head_low }}</td>
+                        </tr>
+                        <tr>
+                            <th>@lang('quickadmin.total-payment.fields.agent-head-high')</th>
+                            <td field-key='other_erollments'>{{ $total_payment->agent_head_low }}</td>
                         </tr>
                     </table>
                 </div>
@@ -32,7 +38,7 @@
 
             <p>&nbsp;</p>
 
-            <a href="{{ route('admin.tresuaries.index') }}" class="btn btn-default">@lang('quickadmin.qa_back_to_list')</a>
+            <a href="{{ route('admin.total_payment.index') }}" class="btn btn-default">@lang('quickadmin.qa_back_to_list')</a>
         </div>
     </div>
 @stop

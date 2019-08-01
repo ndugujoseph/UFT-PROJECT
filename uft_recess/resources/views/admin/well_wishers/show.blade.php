@@ -14,7 +14,7 @@
                     <table class="table table-bordered table-striped">
                         <tr>
                             <th>@lang('quickadmin.well-wishers.fields.first-name')</th>
-                            <td field-key='first_name'>{{ $well_wishers->first_name }}</td>
+                            <td field-key='name'>{{ $well_wishers->name }}</td>
                         </tr>
                         <tr>
                             <th>@lang('quickadmin.well-wishers.fields.date')</th>

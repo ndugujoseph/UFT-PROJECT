@@ -15,7 +15,7 @@ class Add5d19a26f77a95RelationshipsToUserTable extends Migration
         Schema::table('users', function(Blueprint $table) {
             if (!Schema::hasColumn('users', 'role_id')) {
                 $table->integer('role_id')->unsigned()->nullable();
-                $table->foreign('role_id', '320296_5d19a26b8e853')->references('id')->on('roles')->onDelete('cascade');
+                $table->foreign('role_id')->references('id')->on('roles');
                 }
                 
         });

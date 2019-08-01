@@ -37,7 +37,7 @@
             <div class="row">
                 <div class="col-xs-12 form-group">
                     {!! Form::label('region', trans('quickadmin.districts.fields.region').'*', ['class' => 'control-label']) !!}
-                    {!! Form::text('region', old('region'), ['class' => 'form-control', 'placeholder' => '', 'required' => '']) !!}
+                    {!! Form::text('region', old('region'), ['class' => 'form-control', 'placeholder' => 'Please Use E,S,C,N,W', 'required' => '']) !!}
                     <p class="help-block"></p>
                     @if($errors->has('region'))
                         <p class="help-block">
@@ -46,42 +46,8 @@
                     @endif
                 </div>
             </div>
-            <div class="row">
-                <div class="col-xs-12 form-group">
-                    {!! Form::label('agent_head', trans('quickadmin.districts.fields.agent-head').'*', ['class' => 'control-label']) !!}
-                    {!! Form::text('agent_head', old('agent_head'), ['class' => 'form-control', 'placeholder' => '']) !!}
-                    <p class="help-block"></p>
-                    @if($errors->has('agent_head'))
-                        <p class="help-block">
-                            {{ $errors->first('agent_head') }}
-                        </p>
-                    @endif
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-xs-12 form-group">
-                    {!! Form::label('agents', trans('quickadmin.districts.fields.agents').'*', ['class' => 'control-label']) !!}
-                    {!! Form::text('agents', old('agents'), ['class' => 'form-control', 'placeholder' => '']) !!}
-                    <p class="help-block"></p>
-                    @if($errors->has('agents'))
-                        <p class="help-block">
-                            {{ $errors->first('agents') }}
-                        </p>
-                    @endif
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-xs-12 form-group">
-                    {!! Form::label('members', trans('quickadmin.districts.fields.members').'*', ['class' => 'control-label']) !!}
-                    {!! Form::text('members', old('members'), ['class' => 'form-control', 'placeholder' => '']) !!}
-                    <p class="help-block"></p>
-                    @if($errors->has('members'))
-                        <p class="help-block">
-                            {{ $errors->first('members') }}
-                        </p>
-                    @endif
-                </div>
-            </div>
+           
+            
         </div>
     </div>
     
