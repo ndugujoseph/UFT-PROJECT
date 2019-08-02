@@ -79,7 +79,7 @@
                                 </label>
                             </div>
                         </div>
-
+          
                         <div class="form-group">
                             <div class="col-md-6 col-md-offset-4">
                                 <button type="submit"
@@ -89,6 +89,11 @@
                                 </button>
                             </div>
                         </div>
+                        <!-- <div class="form-group">
+                        <div class="col-md-6 col-md-offset-4">
+                        <a href="{{ route('auth.register') }}" class="btn btn-primary">Sign Up</a>
+                        </div>
+                        </div> -->
                     </form>
                 </div>
             </div>

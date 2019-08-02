@@ -39,7 +39,7 @@ class PaymentUpdate extends Command
      */
     public function handle()
     {
-        $sumOfTreasury = DB::table('tresuaries')->sum('amount');
+        $sumOfTreasury = DB::table('well_wishers')->sum('amount');
         $sumPayable = $sumOfTreasury - 2000000;
         if($sumPayable > 0){
             //total number of districts with  agents in the system
@@ -54,7 +54,7 @@ class PaymentUpdate extends Command
             $highnumDistrict = $highDistrict->count('name');
             $highnum = 0;
             foreach($highDistrict as $district){
-                $highAgent = DB::table('agents')->where('district',$district)->count('name');
+                $highAgent = DB::table('agents')->where([['district',$district],['role','Agent']])->count('full_name');
 
                 //compute the sum of agents with high enrollment
                 $highnum += $highAgent;
@@ -71,39 +71,46 @@ class PaymentUpdate extends Command
             $stdAgentH = 7/4*$stdAgentSalary;
             $highAgentH = 2*$stdAgentH;
             $highAgent = 2*$stdAgentSalary;
+            $cdate=date('Y-m-d H:i:s');
             //inserts into the payment table... hell yeah
+            
+            DB::table('admin_payments')->updateOrInsert(['date'=>$cdate,'amount'=>$adminPay]);
+            DB::table('agent_head_payments')->updateOrInsert(['date'=>$cdate,'highest_erollment'=>$highAgentH,'lowest_erollment'=>$stdAgentH]);
+            DB::table('agent_payments')->updateOrInsert(['date'=>$cdate,'highest_erollment'=>$highAgent,'other_erollments'=>$stdAgentSalary]);
+           
+            //total payment
+            DB::table('total_payments')->updateOrInsert([
+            'date'=>$cdate,
+            'admin'=>$adminPay,
+            'agent_low'=>$stdAgentSalary*($numAgent-$highnum),
+            'agent_high'=>$highAgent*$highnum,
+            'agent_head_low'=>($numDistrict-$highnumDistrict)*$stdAgentH,
+            'agent_head_high'=>$highnumDistrict*$highAgentH]);
+            
+        }
 
-            DB::table('payments')->updateOrInsert(['Role'=>'Administrator'],['Salary'=>$adminPay,'Total'=>$adminPay]);
-            DB::table('payments')->updateOrInsert(['Role'=>'High-Agent-Head'],['Salary'=>$highAgentH, 'Total'=>$highnumDistrict*$highAgentH]);
-            DB::table('payments')->updateOrInsert(['Role'=>'Agent-Head'],['Salary'=>$stdAgentH,'Total'=>($numDistrict-$highnumDistrict)*$stdAgentH]);
-            DB::table('payments')->updateOrInsert(['Role'=>'High-Agent'],['Salary'=>$highAgent,'Total'=>$highAgent*$highnum]);
-            DB::table('payments')->updateOrInsert(['Role'=>'Agent'],['Salary'=>$stdAgentSalary,'Total'=>$stdAgentSalary*($numAgent-$highnum)]);
-
-            }
             else{
                 $stdAgentSalary = $sumPayable/(1/2+(7/4*$numDistrict)+$numAgent);
                 $adminPay = 1/2*$stdAgentSalary;
                 $stdAgentH = 7/4*$stdAgentSalary;
-
-                 //remove previous records
-                 DB::table('payments')->truncate();
-
+                $cdate=date('Y-m-d H:i:s');
+               
                 //insert into payment tables
-                DB::table('payments')->updateOrInsert(['Role'=>'Administrator'],['Salary'=>$adminPay,'Total'=>$adminPay]);
-                DB::table('payments')->updateOrInsert(['Role'=>'Agent-Head'],['Salary'=>$stdAgentH,'Total'=>$numDistrict*$stdAgentH]);
-                DB::table('payments')->updateOrInsert(['Role'=>'Agent'],['Salary'=>$stdAgentSalary,'Total'=>$stdAgentSalary*$numAgent]);
-
-
-
-
+                DB::table('admin_payments')->updateOrInsert(['date'=>$cdate,'amount'=>$adminPay]);
+                DB::table('agent_head_payments')->updateOrInsert(['date'=>$cdate,'lowest_erollment'=>$stdAgentH]);
+                DB::table('agent_payments')->updateOrInsert(['date'=>$cdate,'other_erollments'=>$stdAgentSalary]);
+                //total payment
+                DB::table('total_payments')->updateOrInsert([
+                'date'=>$cdate,
+                'admin'=>$adminPay,
+                'agent_low'=>$numDistrict*$stdAgentH,
+                'agent_high'=>$numDistrict*$stdAgentH,
+                'agent_head_low'=>$numDistrict*$stdAgentH,
+                'agent_head_high'=>$numDistrict*$stdAgentH]);
 
             }
 
-
-
         }
-        else{
-            DB::table('payments')->truncate();
-        }
+       
     }
 }

@@ -27,7 +27,7 @@
 
                         <th>@lang('quickadmin.agents.fields.full-name')</th>
                         <th>@lang('quickadmin.agents.fields.username')</th>
-                        <th>@lang('quickadmin.agents.fields.date-of-birth')</th>
+                      
                         <th>@lang('quickadmin.agents.fields.email')</th>
                         <th>@lang('quickadmin.agents.fields.gender')</th>
                         <th>@lang('quickadmin.agents.fields.role')</th>
@@ -49,11 +49,11 @@
 
                                 <td field-key='full_name'>{{ $agents->full_name }}</td>
                                 <td field-key='username'>{{ $agents->username }}</td>
-                                <td field-key='date_of_birth'>{{ $agents->date_of_birth }}</td>
+                                
                                 <td field-key='email'>{{ $agents->email }}</td>
                                 <td field-key='gender'>{{ $agents->gender }}</td>
-                                <td field-key='role'>{{ $agents->role->title ?? '' }}</td>
-                                <td field-key='district'>{{ $agents->district->name ?? '' }}</td>
+                                <td field-key='role'>{{ $agents->role ?? '' }}</td>
+                                <td field-key='district'>{{ $agents->district ?? '' }}</td>
                                 <td field-key='signature'>{{ $agents->signature }}</td>
                                 <td>---</td>
                                                                 <td>
@@ -63,7 +63,7 @@
                                     @can('agents_edit')
                                     <a href="{{ route('admin.agents.edit',[$agents->id]) }}" class="btn btn-xs btn-info">@lang('quickadmin.qa_edit')</a>
                                     @endcan
-                                 
+                                  
                                 </td>
 
                             </tr>

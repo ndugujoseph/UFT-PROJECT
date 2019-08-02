@@ -7,8 +7,8 @@ $factory->define(App\Agents::class, function (Faker\Generator $faker) {
         "date_of_birth" => $faker->date("d-m-Y", $max = 'now'),
         "email" => $faker->safeEmail,
         "gender" => $faker->name,
-        "role_id" => factory('App\Role')->create(),
-        "district_id" => factory('App\Districts')->create(),
+        "role" => $faker->name,
+        "district" => $faker->name,
         "signature" => $faker->name,
         "password" => str_random(10),
     ];

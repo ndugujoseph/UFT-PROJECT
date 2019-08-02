@@ -61,8 +61,8 @@ return [
 		'title' => 'Agent heads Payment',
 		'fields' => [
 			'date' => 'Date',
-			'highest-erollment' => 'Highest erollment',
-			'lowest-erollment' => 'Other erollments',
+			'highest-erollment' => 'Highest enrollment',
+			'lowest-erollment' => 'Other enrollments',
 		],
 	],
 	
@@ -70,9 +70,21 @@ return [
 		'title' => 'Agents Payment',
 		'fields' => [
 			'date' => 'Date',
-			'highest-erollment' => 'Highest erollment',
-			'other-erollments' => 'Other erollments',
+			'highest-erollment' => 'Highest enrollment',
+			'other-erollments' => 'Other enrollments',
 		],
+	],
+
+		'total-payment' => [
+			'title' => 'Total Payment',
+			'fields' => [
+				'date' => 'Date',
+				'admin' => 'Admin Payment',
+				'agent-low' => 'Agent Low enrollments',
+				'agent-high' => 'Agent High enrollments',
+				'agent-head-low' => 'Agent Head Low enrollments',
+				'agent-head-high' => 'Agent Head High enrollments',
+			],
 	],
 	
 	'districts' => [
@@ -103,11 +115,11 @@ return [
 	
 	'tresuary' => [
 		'title' => 'Treasury',
-		'fields' => [
-			'date' => 'Date',
-			'amount' => 'Amount',
-			'total' => 'Total',
-		],
+		// 'fields' => [
+		// 	'date' => 'Date',
+		// 	'amount' => 'Amount',
+		// 	'total' => 'Total',
+		// ],
 	],
 	
 	'admin-payment' => [

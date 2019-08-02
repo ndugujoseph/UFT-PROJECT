@@ -12,6 +12,7 @@ use App\Repositories\DistrictRepository;
 use App\Http\Requests\CreateDistrictRequest;
 use App\Http\Requests\UpdateDistrictRequest;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
 use Response;
 
 class DistrictsController extends Controller
@@ -77,7 +78,8 @@ class DistrictsController extends Controller
         Storage::put('/enrollments/'.$distext.'.txt','');
         Storage::put('/recommender/'.$distext.'.txt','');
         Storage::put('/payment/'.$distext.'.txt','');
-
+        Storage::put('/username/'.$distext.'.txt','');
+        Storage::put('/signature/'.$distext.'.txt','');
        
 
 

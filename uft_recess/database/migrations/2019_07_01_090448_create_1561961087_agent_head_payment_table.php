@@ -12,10 +12,13 @@ class Create1561961087AgentheadPaymentTable extends Migration
      */
     public function up()
     {
-        if(! Schema::hasTable('agent_head_payment')) {
+        if(! Schema::hasTable('agent_head_payments')) {
             Schema::create('agent_head_payments', function (Blueprint $table) {
                 $table->increments('id');
-                $table->text('note')->nullable();
+                $table->date('date')->nullable();
+                $table->decimal('highest_erollment',10,0)->nullable();
+                $table->decimal('lowest_erollment',10,0)->nullable();
+
                 
                 $table->timestamps();
                 
@@ -30,6 +33,6 @@ class Create1561961087AgentheadPaymentTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('agent_head_payment');
+        Schema::dropIfExists('agent_head_payments');
     }
 }

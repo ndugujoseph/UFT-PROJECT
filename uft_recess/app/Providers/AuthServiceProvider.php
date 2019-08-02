@@ -142,6 +142,23 @@ class AuthServiceProvider extends ServiceProvider
             return in_array($user->role_id, [1]);
         });
 
+        // Auth gates for: total_payment
+        Gate::define('total_payment_access', function ($user) {
+            return in_array($user->role_id, [1]);
+        });
+        Gate::define('total_payment_create', function ($user) {
+            return in_array($user->role_id, [1]);
+        });
+        Gate::define('total_payment_edit', function ($user) {
+            return in_array($user->role_id, [1]);
+        });
+        Gate::define('total_payment_view', function ($user) {
+            return in_array($user->role_id, [1]);
+        });
+        Gate::define('total_payment_delete', function ($user) {
+            return in_array($user->role_id, [1]);
+        });
+
         // Auth gates for: districts
         Gate::define('districts_access', function ($user) {
             return in_array($user->role_id, [1]);

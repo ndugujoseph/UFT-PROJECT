@@ -12,7 +12,6 @@ use App\User;
 
 use App\WellWishers;
 
-use App\Tresuary;
 
 use DB;
 
@@ -34,53 +33,55 @@ class ChartController extends Controller
     public function index()
 
     {
+        //funding per month chart
 
-       
+        $fund = WellWishers::where(DB::raw("(DATE_FORMAT(created_at,'%Y'))"),date('Y'))->get();
+                $chart = Charts::database($fund, 'bar', 'highcharts') 
+
+                            ->title("Variation Of Funding Per Month") 
+
+                            ->elementLabel("No. Of Fundings Per Month") 
+
+                            ->dimensions(1000, 500) 
+
+                            ->responsive(true) 
+
+                            ->groupByMonth(date('Y'), true);
+
+
+        //percentage change chart
+
+                          
+    $perc = DB::select(DB::raw("SELECT DATE_FORMAT(created_at,'%M %Y') as month,COUNT(*) as total from members GROUP BY month"));
     
-        $WellWishers = WellWishers::where(DB::raw("(DATE_FORMAT(created_at,'%Y'))"),date('Y'))->get();
               
-        $users = User::where(DB::raw("(DATE_FORMAT(created_at,'%Y'))"),date('Y'))->get();
-               
-        $Tresuary = Tresuary::where(DB::raw("(DATE_FORMAT(created_at,'%Y'))"),date('Y'))->get();
-               
-                $chart = Charts::database($users, 'bar', 'highcharts') 
+                            $value=array();
+                            $updatedvalue=array();
+                            $month=array();
+                             foreach($perc as $i)
+                                                       {
+                            array_push($value,$i->total);
+                            array_push($month,$i->month);
+                                }
+                            for($i=0;$i<count($value)-1;$i++){
+                            array_push($updatedvalue,(($value[$i+1]-$value[$i])/$value[$i]));
+                                    }
+                           
+                           
+            
+                            $chart2 = Charts::database($updatedvalue,'bar', 'highcharts') 
 
-                            ->title("UFT Users") 
+                            ->title("Monthly Percentage Change In Enrollment") 
 
-                            ->elementLabel("No.Of Users") 
-
+                            ->elementLabel("% Change In Enrollment Per Month") 
+                           
+                            ->values($updatedvalue)
+                            ->labels($month)
                             ->dimensions(1000, 500) 
+                            ->responsive(true); 
 
-                            ->responsive(true) 
-
-                            ->groupByMonth(date('Y'), true);
-
-                $chart1 = Charts::database($WellWishers, 'bar', 'highcharts')
-
-                            ->title('WellWishers')
-
-                            ->elementLabel('No. Of Well Wishers')
-
-                            ->dimensions(1000, 500) 
-
-                            ->responsive(true) 
-
-                            ->groupByMonth(date('Y'), true);
-
-             $chart2 = Charts::database($Tresuary, 'bar', 'highcharts') 
-
-                            ->title("UFT Monthly Enrollment") 
-
-                            ->elementLabel("Enrollments") 
-
-                            ->dimensions(1000, 500) 
-
-                            ->responsive(true) 
-
-                            ->groupByMonth(date('Y'), true);
-
-                        
-        return view('chart', compact('chart','chart1','chart2'));
+                                                 
+        return view('chart', compact('chart','chart2'));
 
     }
 

@@ -1,5 +1,5 @@
 <tr data-index="{{ $index }}">
-    <td>{!! Form::text('well_wishers['.$index.'][first_name]', old('well_wishers['.$index.'][first_name]', isset($field) ? $field->first_name: ''), ['class' => 'form-control']) !!}</td>
+    <td>{!! Form::text('well_wishers['.$index.'][name]', old('well_wishers['.$index.'][name]', isset($field) ? $field->name: ''), ['class' => 'form-control']) !!}</td>
 <td>{!! Form::text('well_wishers['.$index.'][amount]', old('well_wishers['.$index.'][amount]', isset($field) ? $field->amount: ''), ['class' => 'form-control']) !!}</td>
 
     <td>

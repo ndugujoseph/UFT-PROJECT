@@ -24,7 +24,7 @@ class UpdateWellWishersRequest extends FormRequest
     {
         return [
             
-            'first_name' => 'required',
+            'name' => 'required',
             'date' => 'required|date_format:'.config('app.date_format'),
             'amount' => 'numeric|required',
         ];

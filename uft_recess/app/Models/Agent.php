@@ -29,14 +29,14 @@ class Agent extends Model
 
 
     public $fillable = [
-        'name',
+        'full_name',
         'username',
         'date_of_birth',
         'email',
         'gender',
-        'role',
+        'role_id',
         'signature',
-        'district',
+        'district_id',
         'password'
         
     ];
@@ -48,14 +48,14 @@ class Agent extends Model
      */
     protected $casts = [
         'id' => 'integer',
-        'name' => 'string',
+        'full_name' => 'string',
         'username' => 'string',
         'date_of_birth' => 'date',
         'email' => 'string',
         'gender' => 'string',
-        'role' => 'string',
+        'role_id' => 'integer',
         'signature' => 'string',
-        'district' => 'string',
+        'district_id' => 'integer',
         'password' => 'string'
         
     ];
@@ -66,7 +66,7 @@ class Agent extends Model
      * @var array
      */
     public static $rules = [
-        'name' => 'required',
+        'full_name' => 'required',
         'signature' => 'required',
         'username' => 'required',
         'date_of_birth' => 'required',
@@ -75,19 +75,19 @@ class Agent extends Model
         'password' => 'required'
     ];
 
-    public function district(){
-        return $this->belongsTo('App/Models/District');
-    }
-    public function member(){
-        return $this->hasMany('App/Modes/Member');
+    // public function district(){
+    //     return $this->belongsTo('App/Models/District');
+    // }
+    // public function member(){
+    //     return $this->hasMany('App/Modes/Member');
 
-    }
-    public function payment(){
-        return $this -> hasMany('App/Model/Payment');
-    }
-    public function Administrator(){
-        return $this->belongsTo('App/Model/Administrator');
-    }
+    // }
+    // public function payment(){
+    //     return $this -> hasMany('App/Model/Payment');
+    // }
+    // public function Administrator(){
+    //     return $this->belongsTo('App/Model/Administrator');
+    // }
 
 
 }

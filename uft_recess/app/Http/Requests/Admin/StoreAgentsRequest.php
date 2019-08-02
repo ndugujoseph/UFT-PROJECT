@@ -25,7 +25,7 @@ class StoreAgentsRequest extends FormRequest
         return [
             'full_name' => 'required',
             'username' => 'required|unique:agents,username,'.$this->route('agents'),
-            'date_of_birth' => 'required|date_format:'.config('app.date_format'),
+            
             'email' => 'required|email|unique:agents,email',
             'gender' => 'required',
             'signature' => 'required',

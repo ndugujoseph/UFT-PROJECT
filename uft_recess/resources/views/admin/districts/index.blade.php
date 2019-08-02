@@ -36,7 +36,7 @@
                         <th>@lang('quickadmin.districts.fields.name')</th>
                         <th>@lang('quickadmin.districts.fields.initials')</th>
                         <th>@lang('quickadmin.districts.fields.region')</th>
-                        <th>@lang('quickadmin.districts.fields.agent-head')</th>
+                        <!-- <th>@lang('quickadmin.districts.fields.agent-head')</th> -->
                         <th>@lang('quickadmin.districts.fields.agents')</th>
                         <th>@lang('quickadmin.districts.fields.members')</th>
                         @if( request('show_deleted') == 1 )
@@ -58,7 +58,7 @@
                                 <td field-key='name'>{{ $districts->name }}</td>
                                 <td field-key='initials'>{{ $districts->initials }}</td>
                                 <td field-key='region'>{{ $districts->region }}</td>
-                                <td field-key='agent_head'>{{ $districts->agent_head }}</td>
+                                <!-- <td field-key='agent_head'>{{ $districts->agent_head }}</td> -->
                                 <td field-key='agents'>{{ $districts->agents }}</td>
                                 <td field-key='members'>{{ $districts->members }}</td>
                                 @if( request('show_deleted') == 1 )
@@ -90,15 +90,7 @@
                                     @can('districts_edit')
                                     <a href="{{ route('admin.districts.edit',[$districts->id]) }}" class="btn btn-xs btn-info">@lang('quickadmin.qa_edit')</a>
                                     @endcan
-                                  <!--  @can('districts_delete')
-{!! Form::open(array(
-                                        'style' => 'display: inline-block;',
-                                        'method' => 'DELETE',
-                                        'onsubmit' => "return confirm('".trans("quickadmin.qa_are_you_sure")."');",
-                                        'route' => ['admin.districts.destroy', $districts->id])) !!}
-                                    {!! Form::submit(trans('quickadmin.qa_delete'), array('class' => 'btn btn-xs btn-danger')) !!}
-                                    {!! Form::close() !!}
-                                    @endcan-->
+                                 
                                 </td>
                                 @endif
                             </tr>

@@ -12,10 +12,10 @@ class Add5d2460d258ebfRelationshipsToWellWishersTable extends Migration
      */
     public function up()
     {
-        Schema::table('crm_customers', function(Blueprint $table) {
-            if (!Schema::hasColumn('crm_customers', 'district_id')) {
+        Schema::table('well_wishers', function(Blueprint $table) {
+            if (!Schema::hasColumn('well_wishers', 'district_id')) {
                 $table->integer('district_id')->unsigned()->nullable();
-                $table->foreign('district_id', '320299_5d2460ce68c28')->references('id')->on('register_agents')->onDelete('cascade');
+                $table->foreign('district_id')->references('id')->on('districts');
                 }
                 
         });
@@ -28,7 +28,7 @@ class Add5d2460d258ebfRelationshipsToWellWishersTable extends Migration
      */
     public function down()
     {
-        Schema::table('crm_customers', function(Blueprint $table) {
+        Schema::table('well_wishers', function(Blueprint $table) {
             
         });
     }

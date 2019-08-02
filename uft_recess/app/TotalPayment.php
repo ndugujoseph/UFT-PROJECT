@@ -3,21 +3,20 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
- * Class Tresuary
+ * Class TotalPayment
  *
  * @package App
  * @property string $date
- * @property decimal $total
- * @property decimal $amount
+ * @property decimal $agent_low
+ * @property decimal $agent_high
+ * @property decimal $agent_head_low
+ * @property decimal $agent_head_high
 */
-class Tresuary extends Model
+class TotalPayment extends Model
 {
-    use SoftDeletes;
-
-    protected $fillable = ['date','amount', 'total'];
+    protected $fillable = ['date', 'agent_low', 'agent_high', 'agent_head_low', 'agent_head_high'];
     protected $hidden = [];
     
     
@@ -56,14 +55,36 @@ class Tresuary extends Model
      * Set attribute to money format
      * @param $input
      */
-    public function setTotalAttribute($input)
+    public function setAgentLowAttribute($input)
     {
-        $this->attributes['total'] = $input ? $input : null;
+        $this->attributes['agent_low'] = $input ? $input : null;
     }
-    public function setAmountAttribute($input)
+
+    /**
+     * Set attribute to money format
+     * @param $input
+     */
+    public function setAgentHighAttribute($input)
     {
-        $this->attributes['amount'] = $input ? $input : null;
+        $this->attributes['agent_high'] = $input ? $input : null;
+    }
+
+     /**
+     * Set attribute to money format
+     * @param $input
+     */
+    public function setAgentHeadLowAttribute($input)
+    {
+        $this->attributes['agent_head_low'] = $input ? $input : null;
+    }
+
+    /**
+     * Set attribute to money format
+     * @param $input
+     */
+    public function setAgentHeadHighAttribute($input)
+    {
+        $this->attributes['agent_head_high'] = $input ? $input : null;
     }
     
-       
 }

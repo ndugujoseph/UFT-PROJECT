@@ -17,7 +17,11 @@ class AgentRepository extends BaseRepository
      * @var array
      */
     protected $fieldSearchable = [
-        'name',
+        'full_name',
+        'username',
+        'date_of_birth',
+        'email',
+        'gender',
         'district',
         'signature'
     ];

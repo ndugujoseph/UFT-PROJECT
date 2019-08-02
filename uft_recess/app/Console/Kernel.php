@@ -19,7 +19,11 @@ class Kernel extends ConsoleKernel
         Commands\MemberNum::class,
         Commands\AgentNum::class,
         Commands\PaymentUpdate::class,
+        
         Commands\MemberRec::class,
+        Commands\AgentHead::class,
+       
+        
     ];
 
     /**
@@ -43,7 +47,9 @@ class Kernel extends ConsoleKernel
         ->cron('* * * * *');
         $schedule->command('rec:number')
         ->cron('* * * * *');
-
+        $schedule->command('agent-head')
+        ->cron('* * * * *');
+        
 
 
     }

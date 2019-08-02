@@ -28,17 +28,10 @@
 
         <!-- Main Application (Can be VueJS or other JS framework) -->
 
-        <div class="app">
-
-            <center>
-
+        <div class="app">       
                 {!! $chart->html() !!}
-                {!! $chart1->html() !!}
+               
                 {!! $chart2->html() !!}
-                
-
-            </center>
-
         </div>
 
         <!-- End Of Main Application -->
@@ -46,7 +39,7 @@
         {!! Charts::scripts() !!}
 
         {!! $chart->script() !!}
-        {!! $chart1->script() !!}
+      
         {!! $chart2->script() !!}
         
     </body>

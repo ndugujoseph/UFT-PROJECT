@@ -6,14 +6,14 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
 
-class MemberRec extends Command
+class AgentHead extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'rec:number';
+    protected $signature = 'agent-head';
 
     /**
      * The console command description.
@@ -39,17 +39,12 @@ class MemberRec extends Command
      */
     public function handle()
     {
-        $members = DB::table('members')->pluck('member_id');
-        foreach($members as $member){
-                $count = DB::table('members')
-                    ->where('recommender_member',$member)
-                    ->count();
-                DB::table('members')
-                    ->where('member_id',$member)
-                    ->update(['recommendees'=>$count]);
+        $disID = DB::table('agents')->where('role_id',3)->pluck('district_id');
         
-    
+        $agenthead = DB::table('agents')->where('role_id',3)->pluck('full_name');
+        
+        DB::table('districts')->where('id',$disID)->update(['agent_head'=>$agenthead]);
 
-        }
     }
+
 }

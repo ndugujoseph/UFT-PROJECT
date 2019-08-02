@@ -23,7 +23,7 @@ class StoreWellWishersRequest extends FormRequest
     public function rules()
     {
         return [
-            'first_name' => 'required',
+            'name' => 'required',
             'date' => 'required|date_format:'.config('app.date_format'),
             'amount' => 'numeric|required',
         ];

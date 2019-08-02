@@ -71,7 +71,7 @@ class Member extends Model
         'recommender_member' => 'required',
         'date' => 'required',
         'gender' => 'required',
-        'agent' => 'required'
+        
     ];
     public function agent(){
         $this->belongsTo('App/Models/Agent');

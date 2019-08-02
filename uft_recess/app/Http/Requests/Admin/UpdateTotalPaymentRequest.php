@@ -3,7 +3,7 @@ namespace App\Http\Requests\Admin;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateUftChartsRequest extends FormRequest
+class UpdateTotalPaymentRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,7 +24,13 @@ class UpdateUftChartsRequest extends FormRequest
     {
         return [
             
-            'reports' => 'required',
+            'date' => 'required|date_format:'.config('app.date_format'),
+            'admin' => 'required',
+            'agent_low' => 'required',
+            'agent_high' => 'required',
+            'agent_head_low' => 'required',
+            'agent_head_high' => 'required',
+
         ];
     }
 }
