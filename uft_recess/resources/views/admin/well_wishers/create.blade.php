@@ -12,12 +12,12 @@
         <div class="panel-body">
             <div class="row">
                 <div class="col-xs-12 form-group">
-                    {!! Form::label('first_name', trans('quickadmin.well-wishers.fields.first-name').'*', ['class' => 'control-label']) !!}
-                    {!! Form::text('first_name', old('first_name'), ['class' => 'form-control', 'placeholder' => '', 'required' => '']) !!}
+                    {!! Form::label('name', trans('quickadmin.well-wishers.fields.first-name').'*', ['class' => 'control-label']) !!}
+                    {!! Form::text('name', old('name'), ['class' => 'form-control', 'placeholder' => '', 'required' => '']) !!}
                     <p class="help-block"></p>
-                    @if($errors->has('first_name'))
+                    @if($errors->has('name'))
                         <p class="help-block">
-                            {{ $errors->first('first_name') }}
+                            {{ $errors->first('name') }}
                         </p>
                     @endif
                 </div>

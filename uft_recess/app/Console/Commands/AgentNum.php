@@ -39,13 +39,13 @@ class AgentNum extends Command
      */
     public function handle()
     {
-        $districts = DB::table('districts')->pluck('name');
+        $districts = DB::table('districts')->pluck('id');
         foreach($districts as $district){
                 $count = DB::table('agents')
-                    ->where('district',$district)
+                    ->where('district_id',$district)
                     ->count();
                 DB::table('districts')
-                    ->where('name',$district)
+                    ->where('id',$district)
                     ->update(['agents'=>$count]);
 
         }

@@ -28,9 +28,12 @@ class District extends Model
 
 
     public $fillable = [
-        'code',
         'name',
-        'enrollments'
+        'initials',
+        'region',
+        'agent_head',
+        'agents',
+        'members'
     ];
 
     /**
@@ -39,9 +42,13 @@ class District extends Model
      * @var array
      */
     protected $casts = [
-        'code' => 'string',
+        
         'name' => 'string',
-        'enrollments'=> 'integer'
+        'initials' => 'string',
+        'region' => 'string',
+        'agent_head' => 'string',
+        'agents' => 'integer',
+        'members' => 'integer'
     ];
 
     /**
@@ -50,16 +57,17 @@ class District extends Model
      * @var array
      */
     public static $rules = [
-        'code' => 'required',
-        'name' => 'required'
+        'name' => 'required',
+        'initials' => 'required',
+        'region' => 'required'
     ];
 
     public function agent(){
         return $this->hasMany('App/Models/Agent');
     }
-    public function member(){
-        return $this->hasMany('App/Models/Member');
-    }
+    // public function member(){
+    //     return $this->hasMany('App/Models/Member');
+    // }
 
 
 }

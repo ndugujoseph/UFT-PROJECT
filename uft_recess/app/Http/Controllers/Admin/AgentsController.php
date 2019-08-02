@@ -6,11 +6,17 @@ use App\Agents;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\CreateAgentRequest;
 use App\Http\Requests\Admin\StoreAgentsRequest;
 use App\Http\Requests\Admin\UpdateAgentsRequest;
+use Illuminate\Support\Facades\DB;
+use Response;
+use Illuminate\Support\Arr;
 
 class AgentsController extends Controller
 {
+    
+ 
     /**
      * Display a listing of Agents.
      *
@@ -38,28 +44,43 @@ class AgentsController extends Controller
         if (! Gate::allows('agents_create')) {
             return abort(401);
         }
-        
-        $roles = \App\Role::get()->pluck('title', 'id')->prepend(trans('quickadmin.qa_please_select'), '');
-        $districts = \App\Districts::get()->pluck('name', 'id')->prepend(trans('quickadmin.qa_please_select'), '');
 
-        return view('admin.agents.create', compact('roles', 'districts'));
+        return view('admin.agents.create');
     }
 
     /**
      * Store a newly created Agents in storage.
      *
-     * @param  \App\Http\Requests\StoreAgentsRequest  $request
+     * @param  \App\Http\Requests\CraeteAgentRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreAgentsRequest $request)
+    public function store(CreateAgentRequest $request)
     {
         if (! Gate::allows('agents_create')) {
             return abort(401);
         }
-        $agents = Agents::create($request->all());
 
+        $input = $request->all();
+        
+        $min = DB::table('districts')->min('agents');
+        $minDistrict = DB::table('districts')
+            ->where('agents',$min)
+            ->pluck('name')
+            ->first();
+           
+        if($min == 0){
+            $minDistrict = ['district'=>$minDistrict,'role'=>'Agent Head'];
+        }
+        else{
+            $minDistrict = ['district'=>$minDistrict,'role'=>'Agent'];
 
-
+        }
+        
+        $input = array_merge($input,$minDistrict);
+        $input = Arr::except($input,['_token','date_of_birth']);
+        DB::table('agents')->UpdateorInsert($input);
+         
+       
         return redirect()->route('admin.agents.index');
     }
 
@@ -76,12 +97,10 @@ class AgentsController extends Controller
             return abort(401);
         }
         
-        $roles = \App\Role::get()->pluck('title', 'id')->prepend(trans('quickadmin.qa_please_select'), '');
-        $districts = \App\Districts::get()->pluck('name', 'id')->prepend(trans('quickadmin.qa_please_select'), '');
-
+       
         $agents = Agents::findOrFail($id);
 
-        return view('admin.agents.edit', compact('agents', 'roles', 'districts'));
+        return view('admin.agents.edit', compact('agents'));
     }
 
     /**

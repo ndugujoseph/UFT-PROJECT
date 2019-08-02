@@ -42,7 +42,7 @@
                                     <td></td>
                                 @endcan
 
-                                <td field-key='first_name'>{{ $well_wishers->first_name }}</td>
+                                <td field-key='name'>{{ $well_wishers->name }}</td>
                                 <td field-key='date'>{{ $well_wishers->date }}</td>
                                 <td field-key='amount'>{{ $well_wishers->amount }}</td>
                                 <td field-key='district'>{{ $well_wishers->district->name ?? '' }}</td>
@@ -53,15 +53,7 @@
                                     @can('well_wishers_edit')
                                     <a href="{{ route('admin.well_wishers.edit',[$well_wishers->id]) }}" class="btn btn-xs btn-info">@lang('quickadmin.qa_edit')</a>
                                     @endcan
-                                   <!-- @can('well_wishers_delete')
-{!! Form::open(array(
-                                        'style' => 'display: inline-block;',
-                                        'method' => 'DELETE',
-                                        'onsubmit' => "return confirm('".trans("quickadmin.qa_are_you_sure")."');",
-                                        'route' => ['admin.well_wishers.destroy', $well_wishers->id])) !!}
-                                    {!! Form::submit(trans('quickadmin.qa_delete'), array('class' => 'btn btn-xs btn-danger')) !!}
-                                    {!! Form::close() !!}
-                                    @endcan-->
+                                  
                                 </td>
 
                             </tr>

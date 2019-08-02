@@ -29,11 +29,16 @@ class Agent extends Model
 
 
     public $fillable = [
-        'name',
+        'full_name',
+        'username',
+        'date_of_birth',
+        'email',
+        'gender',
+        'role_id',
         'signature',
-        'district',
-        'salary',
-        'role'
+        'district_id',
+        'password'
+        
     ];
 
     /**
@@ -43,11 +48,16 @@ class Agent extends Model
      */
     protected $casts = [
         'id' => 'integer',
-        'name' => 'string',
-        'district' => 'string',
+        'full_name' => 'string',
+        'username' => 'string',
+        'date_of_birth' => 'date',
+        'email' => 'string',
+        'gender' => 'string',
+        'role_id' => 'integer',
         'signature' => 'string',
-        'salary'=>'float',
-        'role'=>'string'
+        'district_id' => 'integer',
+        'password' => 'string'
+        
     ];
 
     /**
@@ -56,23 +66,28 @@ class Agent extends Model
      * @var array
      */
     public static $rules = [
-        'name' => 'required',
-        'signature' => 'required'
+        'full_name' => 'required',
+        'signature' => 'required',
+        'username' => 'required',
+        'date_of_birth' => 'required',
+        'email' => 'required',
+        'gender' => 'required',
+        'password' => 'required'
     ];
 
-    public function district(){
-        return $this->belongsTo('App/Models/District');
-    }
-    public function member(){
-        return $this->hasMany('App/Modes/Member');
+    // public function district(){
+    //     return $this->belongsTo('App/Models/District');
+    // }
+    // public function member(){
+    //     return $this->hasMany('App/Modes/Member');
 
-    }
-    public function payment(){
-        return $this -> hasMany('App/Model/Payment');
-    }
-    public function Administrator(){
-        return $this->belongsTo('App/Model/Administrator');
-    }
+    // }
+    // public function payment(){
+    //     return $this -> hasMany('App/Model/Payment');
+    // }
+    // public function Administrator(){
+    //     return $this->belongsTo('App/Model/Administrator');
+    // }
 
 
 }

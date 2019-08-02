@@ -13,7 +13,17 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        //
+        
+
+        Commands\MemberUpload::class,
+        Commands\MemberNum::class,
+        Commands\AgentNum::class,
+        Commands\PaymentUpdate::class,
+        
+        Commands\MemberRec::class,
+        Commands\AgentHead::class,
+       
+        
     ];
 
     /**
@@ -26,7 +36,24 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')
         //          ->hourly();
+
+        $schedule->command('member:upload')
+        ->cron('* * * * *');
+        $schedule->command('member:number')
+        ->cron('* * * * *');
+        $schedule->command('agent:number')
+        ->cron('* * * * *');
+        $schedule->command('pay:update')
+        ->cron('* * * * *');
+        $schedule->command('rec:number')
+        ->cron('* * * * *');
+        $schedule->command('agent-head')
+        ->cron('* * * * *');
+        
+
+
     }
+
 
     /**
      * Register the commands for the application.

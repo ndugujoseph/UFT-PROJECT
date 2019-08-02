@@ -21,7 +21,7 @@
 
         
         <span class="uft" style="color:#fff;">
-                    <strong>UNITED FRONT FOR TRANSFORMATION</strong></span>
+                    <strong>UNITED FRONT FOR TRANSFORMATION POLITICAL PARTY</strong></span>
         
         
 

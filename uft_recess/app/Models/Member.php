@@ -10,13 +10,14 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @package App\Models
  * @version June 27, 2019, 10:32 am UTC
  *
- * @property string id
- * @property string name
- * @property string district
- * @property string recommender
- * @property string DateOfEnroll
- * @property string gender
- * @property string agent
+ * @property string      name
+ * @property string      district
+ * @property string      recommender_agent
+ * @property string      recommender_member
+ * @property string      date
+ * @property string      member_id
+ * @property string      gender
+ * @property string      recommendees
  */
 class Member extends Model
 {
@@ -32,13 +33,14 @@ class Member extends Model
 
 
     public $fillable = [
-        'id',
         'name',
         'district',
-        'recommender',
-        'DateOfEnroll',
+        'recommender_agent',
+        'recommender_member',
+        'date',
+        'member_id',
         'gender',
-        'agent'
+        'recommendees'
     ];
 
     /**
@@ -47,13 +49,14 @@ class Member extends Model
      * @var array
      */
     protected $casts = [
-        'id' => 'string',
+        'member_id' => 'string',
         'name' => 'string',
         'district' => 'string',
-        'recommender' => 'string',
-        'DateOfEnroll' => 'date',
+        'recommender_agent' => 'string',
+        'recommender_member' => 'string',
+        'date' => 'date',
         'gender' => 'string',
-        'agent' => 'string'
+        'recommendees' => 'string'
     ];
 
     /**
@@ -64,10 +67,11 @@ class Member extends Model
     public static $rules = [
         'name' => 'required',
         'district' => 'required',
-        'recommender' => 'required',
-        'DateOfEnroll' => 'required',
+        'recommender_agent' => 'required',
+        'recommender_member' => 'required',
+        'date' => 'required',
         'gender' => 'required',
-        'agent' => 'required'
+        
     ];
     public function agent(){
         $this->belongsTo('App/Models/Agent');

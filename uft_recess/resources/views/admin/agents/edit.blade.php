@@ -35,18 +35,7 @@
                     @endif
                 </div>
             </div>
-            <div class="row">
-                <div class="col-xs-12 form-group">
-                    {!! Form::label('date_of_birth', trans('quickadmin.agents.fields.date-of-birth').'*', ['class' => 'control-label']) !!}
-                    {!! Form::text('date_of_birth', old('date_of_birth'), ['class' => 'form-control date', 'placeholder' => '', 'required' => '']) !!}
-                    <p class="help-block"></p>
-                    @if($errors->has('date_of_birth'))
-                        <p class="help-block">
-                            {{ $errors->first('date_of_birth') }}
-                        </p>
-                    @endif
-                </div>
-            </div>
+            
             <div class="row">
                 <div class="col-xs-12 form-group">
                     {!! Form::label('email', trans('quickadmin.agents.fields.email').'*', ['class' => 'control-label']) !!}
@@ -71,30 +60,7 @@
                     @endif
                 </div>
             </div>
-            <div class="row">
-                <div class="col-xs-12 form-group">
-                    {!! Form::label('role_id', trans('quickadmin.agents.fields.role').'', ['class' => 'control-label']) !!}
-                    {!! Form::select('role_id', $roles, old('role_id'), ['class' => 'form-control select2']) !!}
-                    <p class="help-block"></p>
-                    @if($errors->has('role_id'))
-                        <p class="help-block">
-                            {{ $errors->first('role_id') }}
-                        </p>
-                    @endif
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-xs-12 form-group">
-                    {!! Form::label('district_id', trans('quickadmin.agents.fields.district').'', ['class' => 'control-label']) !!}
-                    {!! Form::select('district_id', $districts, old('district_id'), ['class' => 'form-control select2']) !!}
-                    <p class="help-block"></p>
-                    @if($errors->has('district_id'))
-                        <p class="help-block">
-                            {{ $errors->first('district_id') }}
-                        </p>
-                    @endif
-                </div>
-            </div>
+            
             <div class="row">
                 <div class="col-xs-12 form-group">
                     {!! Form::label('signature', trans('quickadmin.agents.fields.signature').'*', ['class' => 'control-label']) !!}
@@ -127,7 +93,7 @@
     {!! Form::close() !!}
 @stop
 
-@section('javascript')
+<!-- @section('javascript')
     @parent
 
     <script src="{{ url('adminlte/plugins/datetimepicker/moment-with-locales.min.js') }}"></script>
@@ -146,4 +112,4 @@
         });
     </script>
             
-@stop
+@stop -->

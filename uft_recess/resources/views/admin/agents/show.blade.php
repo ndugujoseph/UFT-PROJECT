@@ -20,10 +20,7 @@
                             <th>@lang('quickadmin.agents.fields.username')</th>
                             <td field-key='username'>{{ $agents->username }}</td>
                         </tr>
-                        <tr>
-                            <th>@lang('quickadmin.agents.fields.date-of-birth')</th>
-                            <td field-key='date_of_birth'>{{ $agents->date_of_birth }}</td>
-                        </tr>
+                       
                         <tr>
                             <th>@lang('quickadmin.agents.fields.email')</th>
                             <td field-key='email'>{{ $agents->email }}</td>
@@ -32,6 +29,7 @@
                             <th>@lang('quickadmin.agents.fields.gender')</th>
                             <td field-key='gender'>{{ $agents->gender }}</td>
                         </tr>
+                    
                         <tr>
                             <th>@lang('quickadmin.agents.fields.signature')</th>
                             <td field-key='signature'>{{ $agents->signature }}</td>
@@ -51,23 +49,3 @@
     </div>
 @stop
 
-@section('javascript')
-    @parent
-
-    <script src="{{ url('adminlte/plugins/datetimepicker/moment-with-locales.min.js') }}"></script>
-    <script src="{{ url('adminlte/plugins/datetimepicker/bootstrap-datetimepicker.min.js') }}"></script>
-    <script>
-        $(function(){
-            moment.updateLocale('{{ App::getLocale() }}', {
-                week: { dow: 1 } // Monday is the first day of the week
-            });
-            
-            $('.date').datetimepicker({
-                format: "{{ config('app.date_format_moment') }}",
-                locale: "{{ App::getLocale() }}",
-            });
-            
-        });
-    </script>
-            
-@stop

@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Gate;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\StoreWellWishersRequest;
 use App\Http\Requests\Admin\UpdateWellWishersRequest;
+use Illuminate\Support\Facades\DB;
 
 class WellWishersController extends Controller
 {
@@ -56,9 +57,8 @@ class WellWishersController extends Controller
             return abort(401);
         }
         $well_wishers = WellWishers::create($request->all());
-
-
-
+        
+        
         return redirect()->route('admin.well_wishers.index');
     }
 
@@ -97,7 +97,7 @@ class WellWishersController extends Controller
         $well_wishers = WellWishers::findOrFail($id);
         $well_wishers->update($request->all());
 
-
+          
 
         return redirect()->route('admin.well_wishers.index');
     }

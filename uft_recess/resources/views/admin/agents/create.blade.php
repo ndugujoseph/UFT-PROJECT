@@ -61,7 +61,7 @@
             <div class="row">
                 <div class="col-xs-12 form-group">
                     {!! Form::label('gender', trans('quickadmin.agents.fields.gender').'*', ['class' => 'control-label']) !!}
-                    {!! Form::text('gender', old('gender'), ['class' => 'form-control', 'placeholder' => '', 'required' => '']) !!}
+                    {!! Form::text('gender', old('gender'), ['class' => 'form-control', 'placeholder' => 'Please use M or F', 'required' => '']) !!}
                     <p class="help-block"></p>
                     @if($errors->has('gender'))
                         <p class="help-block">
@@ -70,34 +70,12 @@
                     @endif
                 </div>
             </div>
-            <div class="row">
-                <div class="col-xs-12 form-group">
-                    {!! Form::label('role_id', trans('quickadmin.agents.fields.role').'', ['class' => 'control-label']) !!}
-                    {!! Form::select('role_id', $roles, old('role_id'), ['class' => 'form-control select2']) !!}
-                    <p class="help-block"></p>
-                    @if($errors->has('role_id'))
-                        <p class="help-block">
-                            {{ $errors->first('role_id') }}
-                        </p>
-                    @endif
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-xs-12 form-group">
-                    {!! Form::label('district_id', trans('quickadmin.agents.fields.district').'', ['class' => 'control-label']) !!}
-                    {!! Form::select('district_id', $districts, old('district_id'), ['class' => 'form-control select2']) !!}
-                    <p class="help-block"></p>
-                    @if($errors->has('district_id'))
-                        <p class="help-block">
-                            {{ $errors->first('district_id') }}
-                        </p>
-                    @endif
-                </div>
-            </div>
+            
+            
             <div class="row">
                 <div class="col-xs-12 form-group">
                     {!! Form::label('signature', trans('quickadmin.agents.fields.signature').'*', ['class' => 'control-label']) !!}
-                    {!! Form::text('signature', old('signature'), ['class' => 'form-control', 'placeholder' => '', 'required' => '']) !!}
+                    {!! Form::text('signature', old('signature'), ['class' => 'form-control', 'placeholder' => 'Please Use letters A-Z', 'required' => '']) !!}
                     <p class="help-block"></p>
                     @if($errors->has('signature'))
                         <p class="help-block">

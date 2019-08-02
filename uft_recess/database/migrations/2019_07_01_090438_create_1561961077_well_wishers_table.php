@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class Create1561961077CrmCustomersTable extends Migration
+class Create1561961077WellWishersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,17 +12,13 @@ class Create1561961077CrmCustomersTable extends Migration
      */
     public function up()
     {
-        if(! Schema::hasTable('crm_customers')) {
-            Schema::create('crm_customers', function (Blueprint $table) {
+        if(! Schema::hasTable('well_wishers')) {
+            Schema::create('well_wishers', function (Blueprint $table) {
                 $table->increments('id');
-                $table->string('first_name')->nullable();
-                $table->string('last_name')->nullable();
-                $table->string('email')->nullable();
-                $table->string('phone')->nullable();
-                $table->string('address')->nullable();
-                $table->string('skype')->nullable();
-                $table->string('website')->nullable();
-                $table->text('description')->nullable();
+                $table->string('name')->nullable();
+                $table->decimal('amount',10,0)->nullable();
+                $table->date('date')->nullable();
+                $table->integer('district_id')->nullable();
                 
                 $table->timestamps();
                 
@@ -37,6 +33,6 @@ class Create1561961077CrmCustomersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('crm_customers');
+        Schema::dropIfExists('well_wishers');
     }
 }

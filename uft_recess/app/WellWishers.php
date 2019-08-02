@@ -8,14 +8,14 @@ use Carbon\Carbon;
  * Class WellWishers
  *
  * @package App
- * @property string $first_name
+ * @property string $name
  * @property string $date
  * @property double $amount
  * @property string $district
 */
 class WellWishers extends Model
 {
-    protected $fillable = ['first_name', 'date', 'amount', 'district_id'];
+    protected $fillable = ['name', 'date', 'amount', 'district_id'];
     protected $hidden = [];
     
     

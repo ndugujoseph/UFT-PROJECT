@@ -5,11 +5,22 @@ Route::get('/', function () { return redirect('/admin/home'); });
 Route::get('login', 'Auth\LoginController@showLoginForm')->name('login');
 Route::post('login', 'Auth\LoginController@login')->name('auth.login');
 Route::post('logout', 'Auth\LoginController@logout')->name('auth.logout');
-Route::get('chart/{uft}','ChartController@makeChart');
+Route::get('uft-chart','ChartController@index');
+Route::get('/uft-chart2',function(){
+    return view('chartsnew');
+});
+Route::post('/period','charts2@period');
+
+ Route::get('/upload','UploadController@upload');
+Route::get('/pay','PayController@pay');
 
 // Change Password Routes...
 Route::get('change_password', 'Auth\ChangePasswordController@showChangePasswordForm')->name('auth.change_password');
 Route::patch('change_password', 'Auth\ChangePasswordController@changePassword')->name('auth.change_password');
+
+//register
+Route::get('register', 'Auth\RegisterController@validator')->name('register');
+Route::post('register', 'Auth\RegisterController@create')->name('auth.register');
 
 // Password Reset Routes...
 Route::get('password/reset', 'Auth\ForgotPasswordController@showLinkRequestForm')->name('auth.password.reset');
@@ -32,6 +43,8 @@ Route::group(['middleware' => ['auth'], 'prefix' => 'admin', 'as' => 'admin.'], 
     Route::post('agent_head_payment_mass_destroy', ['uses' => 'Admin\AgentHeadPaymentController@massDestroy', 'as' => 'agent_head_payment.mass_destroy']);
     Route::resource('agent_payments', 'Admin\AgentPaymentController');
     Route::post('agent_payments_mass_destroy', ['uses' => 'Admin\AgentPaymentController@massDestroy', 'as' => 'agent_payments.mass_destroy']);
+    Route::resource('total_payment', 'Admin\TotalPaymentController');
+    Route::post('total_payment_mass_destroy', ['uses' => 'Admin\TotalPaymentController@massDestroy', 'as' => 'total_payment.mass_destroy']);
     Route::resource('districts', 'Admin\DistrictsController');
     Route::post('districts_mass_destroy', ['uses' => 'Admin\DistrictsController@massDestroy', 'as' => 'districts.mass_destroy']);
     Route::post('districts_restore/{id}', ['uses' => 'Admin\DistrictsController@restore', 'as' => 'districts.restore']);

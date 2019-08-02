@@ -28,17 +28,10 @@
 
         <!-- Main Application (Can be VueJS or other JS framework) -->
 
-        <div class="app">
-
-            <center>
-
+        <div class="app">       
                 {!! $chart->html() !!}
-                {!! $chart1->html() !!}
+               
                 {!! $chart2->html() !!}
-                
-
-            </center>
-
         </div>
 
         <!-- End Of Main Application -->
@@ -46,10 +39,17 @@
         {!! Charts::scripts() !!}
 
         {!! $chart->script() !!}
-        {!! $chart1->script() !!}
+      
         {!! $chart2->script() !!}
-
+        
     </body>
+    <footer class="main-footer" >
+  
+  <div class="pull-right hidden-xs">
+    <b>UFT</b> 
+  </div>
+  <strong>Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved @unitedfrontfortransformation.</strong> 
+</footer>
 
 </html>
 @stop

@@ -8,11 +8,23 @@ use Illuminate\Support\Facades\Gate;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\StoreDistrictsRequest;
 use App\Http\Requests\Admin\UpdateDistrictsRequest;
-
-
+use App\Repositories\DistrictRepository;
+use App\Http\Requests\CreateDistrictRequest;
+use App\Http\Requests\UpdateDistrictRequest;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
+use Response;
 
 class DistrictsController extends Controller
 {
+    /** @var  DistrictRepository */
+    private $districtRepository;
+
+    public function __construct(DistrictRepository $districtRepo)
+    {
+        $this->districtRepository = $districtRepo;
+    }
+
     /**
      * Display a listing of Districts.
      *
@@ -53,16 +65,21 @@ class DistrictsController extends Controller
     /**
      * Store a newly created Districts in storage.
      *
-     * @param  \App\Http\Requests\StoreDistrictsRequest  $request
+     * @param  \App\Http\Requests\CreateDistrictRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreDistrictsRequest $request)
+    public function store(CreateDistrictRequest $request)
     {
-        if (! Gate::allows('districts_create')) {
-            return abort(401);
-        }
-        $districts = Districts::create($request->all());
+        $input = $request->all();
 
+        $district = $this->districtRepository->create($input);
+
+        $distext = $request->input('name');
+        Storage::put('/enrollments/'.$distext.'.txt','');
+        Storage::put('/recommender/'.$distext.'.txt','');
+        Storage::put('/payment/'.$distext.'.txt','');
+        Storage::put('/username/'.$distext.'.txt','');
+        Storage::put('/signature/'.$distext.'.txt','');
        
 
 
@@ -116,6 +133,8 @@ class DistrictsController extends Controller
      */
     public function show($id)
     {
+        $district = $this->districtRepository->find($id);
+
         if (! Gate::allows('districts_view')) {
             return abort(401);
         }
@@ -133,6 +152,8 @@ class DistrictsController extends Controller
      */
     public function destroy($id)
     {
+        $district = $this->districtRepository->find($id);
+
         if (! Gate::allows('districts_delete')) {
             return abort(401);
         }
@@ -142,57 +163,4 @@ class DistrictsController extends Controller
         return redirect()->route('admin.districts.index');
     }
 
-    /**
-     * Delete all selected Districts at once.
-     *
-     * @param Request $request
-     */
-    public function massDestroy(Request $request)
-    {
-        if (! Gate::allows('districts_delete')) {
-            return abort(401);
-        }
-        if ($request->input('ids')) {
-            $entries = Districts::whereIn('id', $request->input('ids'))->get();
-
-            foreach ($entries as $entry) {
-                $entry->delete();
-            }
-        }
-    }
-
-
-    /**
-     * Restore Districts from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function restore($id)
-    {
-        if (! Gate::allows('districts_delete')) {
-            return abort(401);
-        }
-        $districts = Districts::onlyTrashed()->findOrFail($id);
-        $districts->restore();
-
-        return redirect()->route('admin.districts.index');
-    }
-
-    /**
-     * Permanently delete Districts from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function perma_del($id)
-    {
-        if (! Gate::allows('districts_delete')) {
-            return abort(401);
-        }
-        $districts = Districts::onlyTrashed()->findOrFail($id);
-        $districts->forceDelete();
-
-        return redirect()->route('admin.districts.index');
-    }
 }
