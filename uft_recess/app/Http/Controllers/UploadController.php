@@ -13,20 +13,7 @@ class UploadController extends Controller
     public function upload()
     { 
 
-        $districts = DB::table('districts')->pluck('name','id');
-        $arraydb = $districts->toArray();
-        $split = Arr::divide($arraydb);
-        
-            dd($districts,$split);
-        foreach($districts as $district){
-            $rec = DB::table('agents')->pluck('username');
-            Storage::delete('recommender/'.$district.'.txt');
-            foreach($rec as $recommender){
-                Storage::append('recommender/'.$district.'.txt',$recommender);
-            }
-    
-       
-    //     $txtmemberId = DB::table('members')->pluck('member_id');
+    //    table('members')->pluck('member_id');
     //     // $mem = $txtmemberId->toArray();
 
     //     // $dis = DB::table('districts')->pluck('name');

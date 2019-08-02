@@ -43,18 +43,18 @@ class PaymentUpdate extends Command
         $sumPayable = $sumOfTreasury - 2000000;
         if($sumPayable > 0){
             //total number of districts with  agents in the system
-            $numDistrict = DB::table('agents')->distinct('district_id')->count('district_id');
+            $numDistrict = DB::table('agents')->distinct('district')->count('district');
             $numAgent  = DB::table('agents')->count();
 
             //district(s) with the highest number of enrollments
             $maxEnrol = DB::table('districts')->max('members');
             $highDistrict = DB::table('districts')->where('members',$maxEnrol)
-                                                  ->pluck('id');
+                                                  ->pluck('name');
 
-            $highnumDistrict = $highDistrict->count('id');
+            $highnumDistrict = $highDistrict->count('name');
             $highnum = 0;
             foreach($highDistrict as $district){
-                $highAgent = DB::table('agents')->where([['district_id',$district],['role_id',2]])->count('full_name');
+                $highAgent = DB::table('agents')->where([['district',$district],['role','Agent']])->count('full_name');
 
                 //compute the sum of agents with high enrollment
                 $highnum += $highAgent;
@@ -73,7 +73,7 @@ class PaymentUpdate extends Command
             $highAgent = 2*$stdAgentSalary;
             $cdate=date('Y-m-d H:i:s');
             //inserts into the payment table... hell yeah
-        
+            
             DB::table('admin_payments')->updateOrInsert(['date'=>$cdate,'amount'=>$adminPay]);
             DB::table('agent_head_payments')->updateOrInsert(['date'=>$cdate,'highest_erollment'=>$highAgentH,'lowest_erollment'=>$stdAgentH]);
             DB::table('agent_payments')->updateOrInsert(['date'=>$cdate,'highest_erollment'=>$highAgent,'other_erollments'=>$stdAgentSalary]);
@@ -94,7 +94,7 @@ class PaymentUpdate extends Command
                 $adminPay = 1/2*$stdAgentSalary;
                 $stdAgentH = 7/4*$stdAgentSalary;
                 $cdate=date('Y-m-d H:i:s');
-                
+               
                 //insert into payment tables
                 DB::table('admin_payments')->updateOrInsert(['date'=>$cdate,'amount'=>$adminPay]);
                 DB::table('agent_head_payments')->updateOrInsert(['date'=>$cdate,'lowest_erollment'=>$stdAgentH]);

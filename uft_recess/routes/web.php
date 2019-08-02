@@ -6,12 +6,21 @@ Route::get('login', 'Auth\LoginController@showLoginForm')->name('login');
 Route::post('login', 'Auth\LoginController@login')->name('auth.login');
 Route::post('logout', 'Auth\LoginController@logout')->name('auth.logout');
 Route::get('uft-chart','ChartController@index');
+Route::get('/uft-chart2',function(){
+    return view('chartsnew');
+});
+Route::post('/period','charts2@period');
+
  Route::get('/upload','UploadController@upload');
 Route::get('/pay','PayController@pay');
 
 // Change Password Routes...
 Route::get('change_password', 'Auth\ChangePasswordController@showChangePasswordForm')->name('auth.change_password');
 Route::patch('change_password', 'Auth\ChangePasswordController@changePassword')->name('auth.change_password');
+
+//register
+Route::get('register', 'Auth\RegisterController@validator')->name('register');
+Route::post('register', 'Auth\RegisterController@create')->name('auth.register');
 
 // Password Reset Routes...
 Route::get('password/reset', 'Auth\ForgotPasswordController@showLinkRequestForm')->name('auth.password.reset');

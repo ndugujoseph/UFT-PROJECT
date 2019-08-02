@@ -63,37 +63,20 @@ class AgentsController extends Controller
         $min = DB::table('districts')->min('agents');
         $minDistrict = DB::table('districts')
             ->where('agents',$min)
-            ->pluck('id')
+            ->pluck('name')
             ->first();
         if($min == 0){
-            $minDistrict = ['district_id'=>$minDistrict,'role_id'=>3];
+            $minDistrict = ['district'=>$minDistrict,'role'=>'Agent Head'];
         }
         else{
-            $minDistrict = ['district_id'=>$minDistrict,'role_id'=>2];
+            $minDistrict = ['district'=>$minDistrict,'role'=>'Agent'];
 
         }
 
         $input = array_merge($input,$minDistrict);
         $agent = $this->agentRepository->create($input);
 
-    //     $districts = DB::table('districts')->pluck('name','id');
-    //     foreach($districts as $district){
-    //         $rec = DB::table('agents')->pluck('username');
-    //         Storage::delete('recommender/'.$district.'.txt');
-    //         foreach($rec as $recommender){
-    //             Storage::append('recommender/'.$district.'.txt',$recommender);
-    //         }
     
-    //    }
-    
-        // $username = DB::table('agents')->pluck('username');
-        // $dist = DB::table('districts')->pluck('name');
-        //                 foreach($dist as $distric){
-
-        //     Storage::put('/recommender/'.$distric.'.txt','');
-        //                 }
-
-        // Flash::success('Agent saved successfully.');
 
         return redirect(route('admin.agents.index'));
     }

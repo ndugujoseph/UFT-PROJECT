@@ -33,6 +33,7 @@ class ChartController extends Controller
     public function index()
 
     {
+        //funding per month chart
 
         $fund = WellWishers::where(DB::raw("(DATE_FORMAT(created_at,'%Y'))"),date('Y'))->get();
                 $chart = Charts::database($fund, 'bar', 'highcharts') 
@@ -48,18 +49,7 @@ class ChartController extends Controller
                             ->groupByMonth(date('Y'), true);
 
 
-        // $WellWishers = WellWishers::where(DB::raw("(DATE_FORMAT(created_at,'%Y'))"),date('Y'))->get();
-        //  $chart1 = Charts::database($WellWishers, 'bar', 'highcharts')
-
-        //                     ->title('Well Wishers')
-
-        //                     ->elementLabel('No. Of Well Wishers Per Month')
-
-        //                     ->dimensions(1000, 500) 
-
-        //                     ->responsive(true)
-                             
-        //                     ->groupByMonth(date('Y'), true);
+        //percentage change chart
 
                           
     $perc = DB::select(DB::raw("SELECT DATE_FORMAT(created_at,'%M %Y') as month,COUNT(*) as total from members GROUP BY month"));

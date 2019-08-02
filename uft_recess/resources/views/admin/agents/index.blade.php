@@ -52,8 +52,8 @@
                                 
                                 <td field-key='email'>{{ $agents->email }}</td>
                                 <td field-key='gender'>{{ $agents->gender }}</td>
-                                <td field-key='role'>{{ $agents->role->title ?? '' }}</td>
-                                <td field-key='district'>{{ $agents->district->name ?? '' }}</td>
+                                <td field-key='role'>{{ $agents->role ?? '' }}</td>
+                                <td field-key='district'>{{ $agents->district ?? '' }}</td>
                                 <td field-key='signature'>{{ $agents->signature }}</td>
                                 <td>---</td>
                                                                 <td>

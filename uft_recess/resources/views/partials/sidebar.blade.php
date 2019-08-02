@@ -150,15 +150,13 @@
                     <span class="title">@lang('quickadmin.uft-charts.title')</span>
                 </a>
             </li>
+            <li class="{{ $request->segment(1) == 'chart' ? 'active' : '' }}">
+                <a href="{{ url('/uft-chart2') }}">
+                    <i class="fa fa-bar-chart"></i>
+                    <span class="title">UFT Chart By Period</span>
+                </a>
+            </li>
             
-            
-
-            
-
-            
-
-
-
             <li class="{{ $request->segment(1) == 'change_password' ? 'active' : '' }}">
                 <a href="{{ route('auth.change_password') }}">
                     <i class="fa fa-key"></i>

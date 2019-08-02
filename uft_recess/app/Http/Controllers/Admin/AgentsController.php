@@ -65,14 +65,14 @@ class AgentsController extends Controller
         $min = DB::table('districts')->min('agents');
         $minDistrict = DB::table('districts')
             ->where('agents',$min)
-            ->pluck('id')
+            ->pluck('name')
             ->first();
            
         if($min == 0){
-            $minDistrict = ['district_id'=>$minDistrict,'role_id'=>3];
+            $minDistrict = ['district'=>$minDistrict,'role'=>'Agent Head'];
         }
         else{
-            $minDistrict = ['district_id'=>$minDistrict,'role_id'=>2];
+            $minDistrict = ['district'=>$minDistrict,'role'=>'Agent'];
 
         }
         

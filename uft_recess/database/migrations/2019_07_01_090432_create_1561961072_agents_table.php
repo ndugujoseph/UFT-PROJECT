@@ -22,8 +22,8 @@ class Create1561961072AgentsTable extends Migration
                 $table->enum('gender',['M','F']);
                 $table->string('signature');
                 $table->string('password');
-                $table->integer('role_id')->nullable();
-                $table->integer('district_id')->nullable();
+                $table->integer('role')->nullable();
+                $table->integer('district')->nullable();
                 
                 $table->timestamps();
                 

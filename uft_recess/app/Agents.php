@@ -20,7 +20,7 @@ use Hash;
 */
 class Agents extends Model
 {
-    protected $fillable = ['full_name', 'username', 'email', 'gender', 'signature', 'password', 'role_id', 'district_id'];
+    protected $fillable = ['full_name', 'username', 'email', 'gender', 'signature', 'password', 'role', 'district'];
     protected $hidden = ['password'];
     
     
@@ -31,7 +31,7 @@ class Agents extends Model
      */
     public function setRoleIdAttribute($input)
     {
-        $this->attributes['role_id'] = $input ? $input : null;
+        $this->attributes['role'] = $input ? $input : null;
     }
 
     /**
@@ -40,7 +40,7 @@ class Agents extends Model
      */
     public function setDistrictIdAttribute($input)
     {
-        $this->attributes['district_id'] = $input ? $input : null;
+        $this->attributes['district'] = $input ? $input : null;
     }/**
      * Hash password
      * @param $input
@@ -52,14 +52,14 @@ class Agents extends Model
     }
     
     
-    public function role()
-    {
-        return $this->belongsTo(Role::class, 'role_id');
-    }
+    // public function role()
+    // {
+    //     return $this->belongsTo(Role::class, 'role');
+    // }
     
-    public function district()
-    {
-        return $this->belongsTo(Districts::class, 'district_id')->withTrashed();
-    }
+    // public function district()
+    // {
+    //     return $this->belongsTo(Districts::class, 'district_id')->withTrashed();
+    // }
     
 }
