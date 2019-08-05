@@ -11,35 +11,109 @@
 
 #define PORT 4444
 
-void checker(int newSocket,char location[],char buffer[],char district[]){
+void replaceAll(char buffer[], char password[],char location[],char username[]){
+		FILE *fptr;
+		FILE *ftemp;
+		puts(location);
+		fptr = fopen(location,"r");
+		ftemp = fopen("replace.tmp","w");
+		char oldword[1024];
+
+		if(fptr == NULL || ftemp == NULL){
+			puts("UNREABALE");
+		}
+		else{
+			while(fgets(buffer,1024,fptr)!=NULL){
+				int totalRead = strlen(buffer);
+				buffer[totalRead - 1] = buffer[totalRead - 1] == '\n' ? '\0' : buffer[totalRead - 1];
+				if(strstr(buffer,username)!=NULL){
+					sprintf(oldword,"%s",buffer);
+					break;
+					}
+			}
+			rewind(fptr);
+			puts(oldword);
+
+			while(fgets(buffer,1024,fptr)!=NULL){
+					char *pos, temp[1024];
+					int index = 0;
+					int owlen;
+					owlen = strlen(oldword);
+
+					while((pos = strstr(buffer,oldword)) != NULL){
+						strcpy(temp,buffer);
+						index = pos - buffer;
+						buffer[index] = '\0';
+						strcat(buffer,password);
+						strcat(buffer,temp+index+owlen);
+					}
+					fputs(buffer,ftemp);
+
+			}
+			fclose(fptr);
+			fclose(ftemp);
+			remove(location);
+			rename("replace.tmp",location);	
+	    }
+
+}
+void checker(int newSocket,char location[],char buffer[],char district[],char status[]){
 		FILE *fptr;
 		char pitem[1024];
 		int words = 0;
+		char message[1024];
+		int clients =0;
+		int check;
 		fptr = fopen(location,"r");
-
+        
 		if(fptr ==NULL){
 			printf("file not found \n");
-			exit(EXIT_FAILURE);
+			if(strcmp(status,"ok")==0){
+                sprintf(message,"Please your file is not complete and valid !!!!!!");
+				send(newSocket, message, sizeof(message),0);	
+			}
 		}
-		//get the number of occurances of the item
-		while(fgets(pitem,1024,fptr)!=NULL){
-			int totalRead = strlen(pitem);
+		else{
+			//get the number of occurances of the item		
+			while(fgets(pitem,1024,fptr)!=NULL){
+				int totalRead = strlen(pitem);
+				pitem[totalRead - 1] = pitem[totalRead - 1] == '\n' ? '\0' : pitem[totalRead - 1];
+				if(strstr(pitem,buffer)!=NULL){
+					words++;
+					check =1;
+				}
+				clients++;
+			}
+			puts(status);
+			if(strcmp(status,"ok")==0){
+				puts("fish");
+				if(check == 1){
+					sprintf(message,"change");
+					send(newSocket,message,sizeof(message),0);
+					sprintf(message,"You have submitted a wrong signature and %d other agents",(clients-1));
+					send(newSocket,message,sizeof(message),0);
+				}
+				else{		
+					sprintf(message,"%d Agent(s) have wrong signature, please submit the file again",clients);
+					send(newSocket,message,sizeof(message),0);
+				}
+			}
+					else{
+				printf("%d\n",words);
+				send(newSocket, &words, sizeof(int),0);
+				rewind(fptr);
 
-			pitem[totalRead - 1] = pitem[totalRead - 1] == '\n' ? '\0' : pitem[totalRead - 1];
-			if(strstr(pitem,buffer)!=NULL){
-				words++;
+				while(fgets(pitem,1024,fptr)!=NULL){
+					int totalRead = strlen(pitem);
+					pitem[totalRead - 1] = pitem[totalRead - 1] == '\n' ? '\0' : pitem[totalRead - 1];
+					if(strstr(pitem,buffer)!=NULL){
+					send(newSocket,pitem,sizeof(pitem),0);			
+					}
+
+				}
 			}
-		}
-		printf("%d\n",words);
-		send(newSocket, &words, sizeof(int),0);
-		rewind(fptr);
-		while(fgets(pitem,1024,fptr)!=NULL){
-			int totalRead = strlen(pitem);
-			pitem[totalRead - 1] = pitem[totalRead - 1] == '\n' ? '\0' : pitem[totalRead - 1];
-			if(strstr(pitem,buffer)!=NULL){
-				send(newSocket,pitem,sizeof(pitem),0);	
-			}
-		}					
+		}	
+					
 }
 int splitter(char data[],char check[],char district[]){
 	char delim[] = ",";
@@ -53,24 +127,22 @@ int splitter(char data[],char check[],char district[]){
 	}
 	if(i > 2){
 		//check if recommender exists in file
+
 		FILE *fptr;
 		char pitem[1024];
 		char location[1024];
-		sprintf(location,"uft_recess/storage/app/recommender/%s.txt",district);
-      //sprintf(location,"recommender.txt");
+		sprintf(location,"uft_recess/storage/app/recommenders/%s.txt",district);
+
 		fptr = fopen(location,"r");
 			if(fptr ==NULL){
 				printf("file not found \n");
-				exit(EXIT_FAILURE);
 			}
 			while(fgets(pitem,1024,fptr)!=NULL){
 				int totalRead = strlen(pitem);
-
 				pitem[totalRead - 1] = pitem[totalRead - 1] == '\n' ? '\0' : pitem[totalRead - 1];
 				if(strstr(pitem,ptx[2])!=NULL){
 					strcpy(check,"ok");
 					break;
-
 				}
 			}
 	}
@@ -78,7 +150,6 @@ int splitter(char data[],char check[],char district[]){
 	else{
 	strcpy(check,"ok");
 	}
-
 	return 0;
 }
 int currdate(char timex[]){
@@ -88,24 +159,22 @@ int currdate(char timex[]){
 	return 0;
 }
 
-int addmember(char arr[],char district[],char dater[]){
+int addmember(char arr[],char district[],char dater[],char username[],char signchecker[]){
 	char location[1024];
+	if(strcmp(signchecker,"approve")==0){
+	sprintf(location,"uft_recess/storage/app/enrollments/%s.sign",district);
+	}
+	else{
 	sprintf(location,"uft_recess/storage/app/enrollments/%s.txt",district);
-  //sprintf(location,"bugiri.txt");
-
+	sprintf(arr,"%s,%s,%s,%s",arr,username,dater,district);
+	}
 	FILE *fp;
-	   fp =fopen(location,"a");
-	   	int totalRead = strlen(arr);
-		arr[totalRead - 1] = arr[totalRead - 1] == '\n' ? '\0' : arr[totalRead - 1];
-	   sprintf(arr,"%s,%s,%s",arr,dater,district);
+	   fp =fopen(location,"a"); 
 	   fputs(arr,fp);
 	   fputs("\n",fp);
 	   fclose(fp);
-
 	return 0;
 }
-
-
 //triming of the strings 
 void ltrim(char str[])
 {
@@ -113,16 +182,14 @@ void ltrim(char str[])
         char buf[1024];
         strcpy(buf, str);
         for(;str[i] == ' ';i++);
-
         for(;str[i] != '\0';i++,j++)
-                buf[j] = str[i];
+         buf[j] = str[i];
         buf[j] = '\0';
         strcpy(str, buf);
 }
 
 int main(){
-
-int day, month, year;
+    int day, month, year;
     time_t now;
     time(&now);
     struct tm *local = localtime(&now);
@@ -131,17 +198,17 @@ int day, month, year;
     year = local->tm_year + 1900;	// get year since 1900
 	
 	int sockfd, ret;
-	 struct sockaddr_in serverAddr;
+	struct sockaddr_in serverAddr;
 	int newSocket;
 	struct sockaddr_in newAddr;
 	socklen_t addr_size;
 	pid_t childpid;
 	sockfd = socket(AF_INET, SOCK_STREAM, 0);
 	if(sockfd < 0){
-		puts("Error in connection.");
+		puts("Error in connection!!!!!!");
 		exit(1);
 	}
-	puts("Server Socket is created.");
+	puts("Server socket is created:::");
 
 	memset(&serverAddr, '\0', sizeof(serverAddr));
 	serverAddr.sin_family = AF_INET;
@@ -150,43 +217,46 @@ int day, month, year;
 
 	ret = bind(sockfd, (struct sockaddr*)&serverAddr, sizeof(serverAddr));
 	if(ret < 0){
-		puts("Error in binding.");
+		puts("Error in binding!!!!!!");
 		exit(1);
 	}
 	printf("Bind to port %d\n", 4444);
 
 	if(listen(sockfd, 10) == 0){
 		printf("Listening....\n");
-        printf("Listening...\n");
-         printf("*-----------'''''''''  U F T   '''''''''-------------*\n");
+		printf("*-----------'''''''''  U F T   '''''''''-------------*\n");
 		 printf("-----------------------------------------------------\n");
          printf("           UNITED FRONT FOR TRANSFORMATION           \n");
          printf("-----------------------------------------------------\n");
          printf("Date: %02d/%02d/%d\n", day, month, year);
 	}else{
-		printf("Error in binding.\n");
+		printf("Error in binding!!!!!!!\n");
 	}
+
+
 	while(1){	
 		newSocket = accept(sockfd, (struct sockaddr*)&newAddr, &addr_size);
 		if(newSocket < 0){
 			exit(1);
 		}
 		printf("Connection accepted from %s:%d\n", inet_ntoa(newAddr.sin_addr), ntohs(newAddr.sin_port));
+
 		if((childpid = fork()) == 0){
 			close(sockfd);
 
 			while(1){
-				char buffer[1024];
+	            char buffer[1024];
 				char district[1024];
+				char password[10];
 				char username[1024];
-
 				char cdate[1024];
-
 				currdate(cdate);
 				recv(newSocket,buffer,1024,0);
-
+               //puts(buffer);
 				if(strcmp(buffer, "Addmember") == 0){
+					char signchecker[1024];
 					recv(newSocket,district,1024,0);
+					recv(newSocket,username,1024,0);
 					recv(newSocket,buffer,1024,0);
 
 					//variables to be used
@@ -200,35 +270,35 @@ int day, month, year;
 						int ch = 0;
 						int words;
 						char location[1024];
-					sprintf(location,"uft_recess/storage/app/enrollments/%s.txt",district);
-					//sprintf(location,"bugiri.txt");
+						sprintf(location,"uft_recess/storage/app/enrollments/%s.txt",district);
 						fp =fopen(location,"a");
 						recv(newSocket, &words, sizeof(int),0);				
 						//printf("%d\n",words);
 						while(ch != words){
 							recv(newSocket,buffer,1024,0);
-							//printf("%s",buffer);
+							printf("%s",buffer);
 							splitter(test,check,district);
 
 							if(strcmp(check,"ok")==0){
-								//puts("file ok");
-								addmember(buffer,district,cdate);
-								sprintf(buffer,"\tcommand allowed");
-								send(newSocket,buffer,sizeof(buffer),0);							
+								puts("file ok");
+								addmember(buffer,district,cdate,username,signchecker);
+								sprintf(buffer,"COMMAND SUCCESFUL");
+								send(newSocket,buffer,sizeof(buffer),0);
+								
+
 							}
 							else{
 								//puts("file failer");
-								sprintf(buffer,"Recommender not found in the database");
+								sprintf(buffer,"RECOMMENDER NOT FOUND IN DATABASE");
 								send(newSocket,buffer,sizeof(buffer),0);
 
 							}
 							
 							ch++;
-							//printf("%d\n",ch);
+							printf("%d\n",ch);
 						}
-						fputs("\n",fp);
 						fclose(fp);
-						//creating a signature file                  
+
 					}
 					else{
 						//splitting and checking the recommender
@@ -236,13 +306,14 @@ int day, month, year;
 
                         if(strcmp(check,"ok")==0){
 							//puts("add ok");
-							addmember(buffer,district,cdate);
-							sprintf(buffer,"\t command allowed");
+							addmember(buffer,district,cdate,username,signchecker);
+							sprintf(buffer,"COMMAND SUCCESFUL");
 							send(newSocket,buffer,sizeof(buffer),0);
 
 						}
 						else{
-							sprintf(buffer,"Recommender not found in the database");
+							//puts("add failer");
+							sprintf(buffer,"RECOMMENDER NOT FOUND IN DATABASE");
 							send(newSocket,buffer,sizeof(buffer),0);
 
 						}
@@ -253,42 +324,87 @@ int day, month, year;
 				}
 				else if(strcmp(buffer, "search") == 0){
 					char location[1024];
+					char status[1024];
 					recv(newSocket,district,1024,0);
 					recv(newSocket,buffer,1024,0);
 					//puts(district);
 					//puts(buffer);
-					sprintf(location,"uft_recess/storage/app/enrollments/%s.txt",district);
-               // sprintf(location,"bugiri.txt");
+
+				
+					sprintf(location,"uft_recess/storage/app/search/enrollments/%s.txt",district);
+
 					   //call the search module
-					checker(newSocket,location,buffer,district);
-                  
+					checker(newSocket,location,buffer,district,status);
+					bzero(buffer,sizeof(buffer));
+
 				}
 				else if(strcmp(buffer, "check_status") == 0){
 					bzero(buffer,sizeof(buffer));
+					char status[1024];
+					sprintf(status,"ok");
+					char location[1024];
 					recv(newSocket,district, sizeof(district),0);
 					recv(newSocket, username, sizeof(username),0);
-					exit(1);				
+					sprintf(location,"uft_recess/storage/app/status/%s.txt",district);
+					checker(newSocket,location,username,district,status);
+
+					
+                   bzero(buffer,sizeof(buffer));
 				}
 				else if(strcmp(buffer, "get_statement") == 0){
+					char status[1024];
 					recv(newSocket,district, sizeof(district),0);
 					recv(newSocket, username, sizeof(username),0);
 
 					char location[1024];
-					sprintf(location,"uft_recess/storage/app/payments/%s.txt",district);
-					//sprintf(location,"bugiri.txt");
+					sprintf(location,"uft_recess/storage/app/payment/%s.txt",district);
 					//call the search module
-				    checker(newSocket,location,username,district);
+				    checker(newSocket,location,username,district,status);
+					bzero(buffer,sizeof(buffer));
 				}
-
 				else if(strcmp(buffer, "Done") == 0){
-					recv(newSocket,buffer,1024,0);
-					printf("%s:%d is disconnected from server\n", inet_ntoa(newAddr.sin_addr), ntohs(newAddr.sin_port));
+					char signchecker[1024];
+					strcpy(signchecker,"approve");
+					char data[1024];
+					recv(newSocket,username, sizeof(username),0);
+					recv(newSocket,district, sizeof(district),0);
+					recv(newSocket,password, sizeof(password),0);
+					sprintf(data,"%s:%s",username,password);
+					addmember(data,district,cdate,username,signchecker);
+
+					bzero(buffer,sizeof(buffer));
+				}
+				
+				else if(strcmp(buffer, "correct") == 0){
+					bzero(buffer,sizeof(buffer));
+				    recv(newSocket,username, sizeof(username),0);
+					recv(newSocket,district, sizeof(district),0);
+					recv(newSocket,password, sizeof(password),0);
+					//puts(username);
+					//puts(password);
+					//puts(district);
+					char location[1024];
+					sprintf(location,"uft_recess/storage/app/enrollments/%s.sign",district);
+          
+		            //call to replaceAll module
+					replaceAll(buffer,password,location,username);
+					sprintf(buffer,"FILE RE-SIGN SUCCESSFULL");
+					send(newSocket,buffer,sizeof(buffer),0);
+
+					bzero(buffer,sizeof(buffer));
+				}
+				
+				else if(strcmp(buffer, "exit") == 0){
+					printf("Disconnected from %s:%d\n", inet_ntoa(newAddr.sin_addr), ntohs(newAddr.sin_port));
 					exit(1);
 				}
+
 			}
 		}
 
 	}
+
 	close(newSocket);
+
 	return 0;
 }
